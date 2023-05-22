@@ -1,3 +1,5 @@
+import { GameWrapper } from './game.styled';
+
 export const GamePage = () => {
-  return <div>GamePage</div>;
+  return <GameWrapper>GamePage</GameWrapper>;
 };
