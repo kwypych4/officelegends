@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model avatar {
+  id            Int            @id @default(autoincrement())
+  face_id       Int
+  shirt_id      Int
+  trousers_id   Int
+  style_id      Int
+  face          face           @relation(fields: [face_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_avatar_face")
+  shirt         inventory_item @relation("avatar_shirt_idToinventory_item", fields: [shirt_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_avatar_shirt")
+  style         inventory_item @relation("avatar_style_idToinventory_item", fields: [style_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_avatar_style")
+  trousers      inventory_item @relation("avatar_trousers_idToinventory_item", fields: [trousers_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_avatar_trousers")
+  player        player[]
+}
+
+model face {
+  id      Int      @id @default(autoincrement())
+  bitmap  String
+  avatars avatar[]
+}
+
+model inventory_item {
+  id                             Int       @id @default(autoincrement())
+  shop_item_id                   Int
+  player_id                      Int
+  avatars_using_this_shirt       avatar[]  @relation("avatar_shirt_idToinventory_item")
+  avatars_using_this_style       avatar[]  @relation("avatar_style_idToinventory_item")
+  avatars_using_these_trousers   avatar[]  @relation("avatar_trousers_idToinventory_item")
+  player                         player    @relation(fields: [player_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_inventory_item_owner")
+  shop_item                      shop_item @relation(fields: [shop_item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_inventory_item_prototype")
+}
+
+model item_type {
+  id         Int         @id @default(autoincrement())
+  type       String
+  shop_items shop_item[]
+}
+
+model player {
+  id              Int              @id @default(autoincrement())
+  username        String
+  password        String
+  money           Int
+  exp             Int
+  avatar_id       Int?
+  inventory_items inventory_item[]
+  avatar          avatar?          @relation(fields: [avatar_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_player_avatar")
+}
+
+model shop_item {
+  id              Int              @id @default(autoincrement())
+  bitmap          String?
+  style           Int?
+  item_type_id    Int
+  item_name       String?
+  item_cost       Int?
+  min_exp         Int?
+  inventory_items inventory_item[]
+  item_type       item_type        @relation(fields: [item_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_shop_item_type")
+}
