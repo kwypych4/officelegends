@@ -1,13 +1,13 @@
-import { Player } from '../model/Player';
+import { player } from '@prisma/client';
 
 export class ConnectedPlayer {
-  public readonly player: Player;
+  public readonly player: player;
 
   public x: number;
 
   public y: number;
 
-  constructor(player: Player) {
+  constructor(player: player) {
     this.player = player;
   }
 }

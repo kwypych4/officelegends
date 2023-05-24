@@ -1,22 +1,11 @@
 import { player, PrismaClient } from '@prisma/client';
 import { hash, verify } from 'argon2';
+import { findPlayerByUsername } from '../db/DbUtils';
 
 const prisma = new PrismaClient();
 
 const login = async (username, password): Promise<player | null> => {
-  const player = await prisma.player.findFirst({
-    where: { username },
-    include: {
-      avatar: {
-        include: {
-          face: true,
-          shirt: true,
-          trousers: true,
-          style: true,
-        },
-      },
-    },
-  });
+  const player = await findPlayerByUsername(username);
 
   if (!player) return null;
   if (!(await verify(player.password, password))) return null;

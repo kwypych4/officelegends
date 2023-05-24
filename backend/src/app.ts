@@ -1,12 +1,11 @@
 import express from 'express';
 import { JSONRPCServer } from 'json-rpc-2.0';
 import session from 'express-session';
-import registerRoutes from './rpc/routes';
-import setupRpcServer from './rpc/server';
-import { Game } from './game/Game';
+import registerRpcRoutes from './rpc/routes';
+import setupRpcServer, { RpcServerParams } from './rpc/server';
 import { login, register } from './auth/UserAuth';
 
-const rpc = new JSONRPCServer<Game>();
+const rpc = new JSONRPCServer<RpcServerParams>();
 const app = express();
 const port = 3000;
 
@@ -24,7 +23,7 @@ app.use(
     extended: true,
   })
 );
-registerRoutes(rpc);
+registerRpcRoutes(rpc);
 setupRpcServer(app, rpc);
 
 app.get('/', (req, res) => {
@@ -33,7 +32,6 @@ app.get('/', (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  console.log({ username, password });
 
   // get Player from db
   const player = await login(username, password);

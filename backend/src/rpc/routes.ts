@@ -1,22 +1,29 @@
 import { JSONRPCServer } from 'json-rpc-2.0';
-import { startGame, Game } from '../game/Game';
+import { RpcServerParams } from './server';
+import { activeGames, startGame } from '../game/Game';
 
-const registerRoutes = (server: JSONRPCServer<Game>) => {
-  server.addMethod('join', ({ player }, game: Game) => {
-    startGame();
-    // const game = activeGames()[player.gameId];
-    // game.onPlayerJoined(player);
-    return player;
+const registerRpcRoutes = (server: JSONRPCServer<RpcServerParams>) => {
+  server.addMethod('startGame', ({ name, map }) => {
+    startGame(name, map);
   });
 
-  server.addMethod('leave', ({ player }) => {
-    // game.onPlayerLeft(player);
+  server.addMethod('listGames', () => activeGames());
+
+  server.addMethod('join', ({ player }, serverParams: RpcServerParams) => {
+    serverParams.game.onPlayerJoined(player);
+  });
+
+  server.addMethod('leave', ({ player }, serverParams: RpcServerParams) => {
+    serverParams.game.onPlayerLeft(player);
   });
 
   server.addMethod('test', () => 'dupa');
-  server.addMethod('chat', ({ text }) => text);
+  server.addMethod('chat', ({ message }, serverParams: RpcServerParams) => {
+    serverParams.game.onChatMessage(message, serverParams.player);
+    return serverParams.game.getChat();
+  });
 
   // TODO: Implement actual methods
 };
 
-export default registerRoutes;
+export default registerRpcRoutes;
