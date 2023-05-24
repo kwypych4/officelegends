@@ -5,8 +5,12 @@ import { Router } from 'router';
 import { GlobalStyles } from 'styles';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  // TODO: add dependency if dev
+  <>
     <GlobalStyles />
     <RouterProvider router={Router} />
-  </React.StrictMode>
+  </>
+
+  // </React.StrictMode>
 );
