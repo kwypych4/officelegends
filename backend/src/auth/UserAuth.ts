@@ -25,63 +25,72 @@ const login = async (username, password): Promise<player | null> => {
 };
 
 const register = async (username: string, password: string, faceId: number): Promise<player | null> => {
-  if (password.length < 8) return null;
+  if (!password || password.length < 8) return null;
 
-  const player = await prisma.player.create({
-    // TODO: Co jeśli user już istnieje? Dokumentacja milczy xD powinniśmy w takim przypadku zwrócić błąd
-    data: {
-      username,
-      password: await hash(password),
-      money: 0,
-      exp: 0,
-    },
-  });
+  try {
+    return await prisma.$transaction(async (tx) => {
+      const player = await tx.player.create({
+        // TODO: Co jeśli user już istnieje? Dokumentacja milczy xD powinniśmy w takim przypadku zwrócić błąd
+        data: {
+          username,
+          password: await hash(password),
+          money: 0,
+          exp: 0,
+        },
+      });
 
-  const playerId = player.id;
+      if (!player) throw new Error('Failed to create player');
 
-  // TODO: Czy da się wstawić wszystkie itemki na raz przy pomocy createMany() tak, żeby nam zwróciło te wstawione rekordy, a przynajmniej ich ID?
-  const userTrousers = prisma.inventory_item.create({
-    data: {
-      player_id: playerId,
-      shop_item_id: 1,
-    },
-  });
+      const playerId = player.id;
 
-  const userShirt = prisma.inventory_item.create({
-    data: {
-      player_id: playerId,
-      shop_item_id: 4,
-    },
-  });
+      // TODO: Czy da się wstawić wszystkie itemki na raz przy pomocy createMany() tak, żeby nam zwróciło te wstawione rekordy, a przynajmniej ich ID?
+      const userTrousers = tx.inventory_item.create({
+        data: {
+          player_id: playerId,
+          shop_item_id: 1,
+        },
+      });
 
-  const userStyle = prisma.inventory_item.create({
-    data: {
-      player_id: playerId,
-      shop_item_id: 7,
-    },
-  });
+      const userShirt = tx.inventory_item.create({
+        data: {
+          player_id: playerId,
+          shop_item_id: 4,
+        },
+      });
 
-  const userItems = await Promise.all([userTrousers, userShirt, userStyle]);
+      const userStyle = tx.inventory_item.create({
+        data: {
+          player_id: playerId,
+          shop_item_id: 7,
+        },
+      });
 
-  const avatar = await prisma.avatar.create({
-    data: {
-      face_id: faceId,
-      trousers_id: userItems[0].id,
-      shirt_id: userItems[1].id,
-      style_id: userItems[2].id,
-    },
-  });
+      const userItems = await Promise.all([userTrousers, userShirt, userStyle]);
 
-  await prisma.player.update({
-    where: {
-      id: playerId,
-    },
-    data: {
-      avatar_id: avatar.id,
-    },
-  });
+      const avatar = await tx.avatar.create({
+        data: {
+          face_id: Number(faceId),
+          trousers_id: userItems[0].id,
+          shirt_id: userItems[1].id,
+          style_id: userItems[2].id,
+        },
+      });
 
-  return player;
+      await tx.player.update({
+        where: {
+          id: playerId,
+        },
+        data: {
+          avatar_id: avatar.id,
+        },
+      });
+
+      return player;
+    });
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
 };
 
 export { login, register };

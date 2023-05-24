@@ -19,6 +19,11 @@ app.use(
 );
 
 app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 registerRoutes(rpc);
 setupRpcServer(app, rpc);
 
@@ -28,22 +33,63 @@ app.get('/', (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
+  console.log({ username, password });
 
   // get Player from db
   const player = await login(username, password);
-
-  req.session.player = player; // TODO: Ogarnąć czemu TypeScript się czepia
-  req.session.save((err) => {
-    res.json({
-      message: 'ok',
+  if (!player) {
+    res.status(401).json({
+      message: 'Login failed',
     });
+    return;
+  }
+
+  req.session.playerId = player.id;
+  req.session.save((err) => {
+    if (err) {
+      res.status(500).json({
+        message: 'Failed to save session data',
+      });
+    } else {
+      res.json({
+        message: 'Login successful',
+      });
+    }
   });
 });
 
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
   const { username, password, faceId } = req.body;
+  console.log(req.body);
 
-  const player = register(username, password, faceId);
+  const player = await register(username, password, faceId);
+  if (!player) {
+    res.status(400).json({
+      message: 'Failed to register new account',
+    });
+    return;
+  }
+
+  const loggedInPlayer = await login(username, password);
+  if (!loggedInPlayer) {
+    res.status(500).json({
+      message: 'Registered but failed to login',
+    });
+    return;
+  }
+
+  req.session.playerId = loggedInPlayer.id;
+  req.session.save((err) => {
+    if (err) {
+      res.status(500).json({
+        message: 'Registered but failed to save session data',
+      });
+    } else {
+      res.json({
+        message: 'Registration successful',
+      });
+    }
+  });
 });
 
 app.listen(port, () => console.log(`Express is listening at http://localhost:${port}`));
