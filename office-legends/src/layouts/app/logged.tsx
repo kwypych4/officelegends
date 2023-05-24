@@ -1,9 +1,11 @@
 import { Outlet } from 'react-router-dom';
 
+import * as Styled from './logged.styled';
+
 export const LoggedLayout = () => {
   return (
-    <div>
+    <Styled.Wrapper>
       <Outlet />
-    </div>
+    </Styled.Wrapper>
   );
 };
