@@ -1,5 +1,6 @@
 import { Express } from 'express';
-import { login, logout, register } from './auth/AuthController';
+import { login, logout, register } from './AuthController';
+import { listRunningServers, registerGameServer, unregisterGameServer } from './GameServersController';
 
 export const registerApiRoutes = (app: Express) => {
   app.get('/', (req, res) => {
@@ -20,5 +21,21 @@ export const registerApiRoutes = (app: Express) => {
 
   app.post('/logout', async (req, res) => {
     await logout(req, res);
+  });
+
+  app.post('/server/register', (req, res) => {
+    const { name, guid } = req.body;
+
+    registerGameServer(name, guid, res);
+  });
+
+  app.post('/server/unregister', (req, res) => {
+    const { guid } = req.body;
+
+    unregisterGameServer(guid, res);
+  });
+
+  app.get('/server', (req, res) => {
+    listRunningServers(res);
   });
 };
