@@ -2,7 +2,7 @@ import { Express, Response } from 'express';
 import { JSONRPCResponse, JSONRPCServer } from 'json-rpc-2.0';
 import { player } from '@prisma/client';
 import { activeGames, Game } from '../game/Game';
-import { findPlayerById } from '../db/DbUtils';
+import { findPlayerById } from '../master/utils/DbUtils';
 
 export type RpcServerParams = {
   game: Game;
