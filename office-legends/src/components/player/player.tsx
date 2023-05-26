@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { variables } from 'variables';
 
 import * as Styled from './player.styled';
@@ -9,7 +9,7 @@ type PlayerProps = {
 export const Player = ({ playerRef: playerRefProps }: PlayerProps) => {
   const intervalRef = useRef<Array<number>>([]);
   const playerRef = playerRefProps;
-
+  const [playerPosition, setPlayerPosition] = useState<'top' | 'left' | 'right' | 'bottom' | null>('bottom');
   const checkBoundaries = ({
     direction,
     playerCurrentPosition,
@@ -48,29 +48,134 @@ export const Player = ({ playerRef: playerRefProps }: PlayerProps) => {
   }) => {
     if (
       direction === 'left' &&
-      playerCurrentLeftPosition + pixelsToMove <= variables.SHOP_WIDTH &&
-      playerCurrentTopPosition <= variables.SHOP_HEIGHT
-    ) {
+      playerCurrentLeftPosition + pixelsToMove <= variables.SHOP_LEFT_POS + variables.SHOP_WIDTH &&
+      playerCurrentTopPosition + 40 <= variables.SHOP_HEIGHT
+    )
       return false;
-    }
+
+    if (
+      direction === 'right' &&
+      playerCurrentLeftPosition + pixelsToMove >= variables.SHOP_LEFT_POS - variables.PLAYER_WIDTH &&
+      playerCurrentTopPosition + 40 <= variables.SHOP_HEIGHT
+    )
+      return false;
 
     if (
       direction === 'top' &&
-      playerCurrentTopPosition + pixelsToMove <= variables.SHOP_HEIGHT &&
-      playerCurrentLeftPosition <= variables.SHOP_WIDTH
+      playerCurrentTopPosition + pixelsToMove <= variables.SHOP_HEIGHT - variables.PLAYER_HEIGHT / 2 &&
+      playerCurrentLeftPosition <= variables.SHOP_LEFT_POS + variables.SHOP_WIDTH &&
+      playerCurrentLeftPosition >= variables.SHOP_LEFT_POS - variables.PLAYER_WIDTH
     ) {
       return false;
     }
 
     if (
       playerCurrentTopPosition <= variables.SHOP_HEIGHT + variables.INTERACTION_MARGIN &&
-      playerCurrentLeftPosition <= variables.SHOP_WIDTH + variables.INTERACTION_MARGIN
+      playerCurrentLeftPosition <= variables.SHOP_WIDTH + variables.INTERACTION_MARGIN - variables.PLAYER_WIDTH
     ) {
       console.log('shop margin');
     }
 
     return true;
   };
+
+  const checkPlayRoomBoundaries = useCallback(
+    ({
+      direction,
+      playerCurrentTopPosition,
+      playerCurrentLeftPosition,
+      pixelsToMove,
+    }: {
+      direction: 'top' | 'bottom' | 'left' | 'right';
+      playerCurrentTopPosition: number;
+      playerCurrentLeftPosition: number;
+      pixelsToMove: number;
+    }) => {
+      if (
+        direction === 'left' &&
+        playerCurrentLeftPosition + pixelsToMove <= variables.PLAYROOM_LEFT_POS + variables.PLAYROOM_WIDTH &&
+        playerCurrentTopPosition < variables.PLAYROOM_HEIGHT - variables.PLAYER_HEIGHT
+      )
+        return false;
+
+      if (
+        direction === 'right' &&
+        playerCurrentLeftPosition + pixelsToMove >= variables.PLAYROOM_LEFT_POS - variables.PLAYER_WIDTH &&
+        playerCurrentTopPosition + 40 <= variables.PLAYROOM_HEIGHT
+      )
+        return false;
+
+      if (
+        direction === 'top' &&
+        playerCurrentTopPosition + pixelsToMove <= variables.PLAYROOM_HEIGHT - variables.PLAYER_HEIGHT / 2 &&
+        playerCurrentLeftPosition >= variables.PLAYROOM_LEFT_POS - variables.PLAYER_WIDTH &&
+        playerCurrentLeftPosition <= variables.PLAYROOM_LEFT_POS + variables.PLAYROOM_WIDTH
+      )
+        return false;
+
+      if (
+        playerCurrentTopPosition <= variables.PLAYROOM_HEIGHT + variables.INTERACTION_MARGIN &&
+        playerCurrentLeftPosition <=
+          variables.PLAYROOM_LEFT_POS + variables.PLAYROOM_WIDTH + variables.INTERACTION_MARGIN - 10 &&
+        playerCurrentLeftPosition >= variables.PLAYROOM_LEFT_POS + variables.INTERACTION_MARGIN + variables.PLAYER_WIDTH
+      ) {
+        console.log('playroom margin');
+      }
+
+      return true;
+    },
+    []
+  );
+  const checkHallOfFameBoundaries = useCallback(
+    ({
+      direction,
+      playerCurrentTopPosition,
+      playerCurrentLeftPosition,
+      pixelsToMove,
+    }: {
+      direction: 'top' | 'bottom' | 'left' | 'right';
+      playerCurrentTopPosition: number;
+      playerCurrentLeftPosition: number;
+      pixelsToMove: number;
+    }) => {
+      if (
+        direction === 'left' &&
+        playerCurrentLeftPosition + pixelsToMove <= variables.HALL_OF_FAME_LEFT_POS + variables.HALL_OF_FAME_WIDTH &&
+        playerCurrentTopPosition < variables.PLAYROOM_HEIGHT - variables.PLAYER_HEIGHT
+      ) {
+        return false;
+      }
+
+      if (
+        direction === 'right' &&
+        playerCurrentLeftPosition + pixelsToMove >= variables.HALL_OF_FAME_LEFT_POS - variables.PLAYER_WIDTH &&
+        playerCurrentTopPosition + 40 <= variables.HALL_OF_FAME_HEIGHT
+      )
+        return false;
+
+      if (
+        direction === 'top' &&
+        playerCurrentTopPosition + pixelsToMove <= variables.HALL_OF_FAME_HEIGHT - variables.PLAYER_HEIGHT / 2 &&
+        playerCurrentLeftPosition >= variables.HALL_OF_FAME_LEFT_POS - variables.PLAYER_WIDTH &&
+        playerCurrentLeftPosition <= variables.HALL_OF_FAME_LEFT_POS + variables.HALL_OF_FAME_WIDTH
+      ) {
+        return false;
+      }
+
+      if (
+        playerCurrentTopPosition <= variables.HALL_OF_FAME_HEIGHT + variables.INTERACTION_MARGIN &&
+        playerCurrentLeftPosition <=
+          variables.HALL_OF_FAME_LEFT_POS + variables.HALL_OF_FAME_WIDTH + variables.INTERACTION_MARGIN - 10 &&
+        playerCurrentLeftPosition >=
+          variables.HALL_OF_FAME_LEFT_POS + variables.INTERACTION_MARGIN + variables.PLAYER_WIDTH
+      ) {
+        console.log('hall of fame margin');
+      }
+
+      return true;
+    },
+    []
+  );
 
   const getPlayerCurrentPosition = useCallback(
     (styleDirection: 'top' | 'left') => {
@@ -90,6 +195,7 @@ export const Player = ({ playerRef: playerRefProps }: PlayerProps) => {
           ? variables.PLAYER_MOVE_PIXELS
           : variables.PLAYER_MOVE_PIXELS * -1;
 
+      // console.log('left: ', getPlayerCurrentPosition('left'), 'top: ', getPlayerCurrentPosition('top'));
       if (
         !checkBoundaries({
           direction,
@@ -101,12 +207,24 @@ export const Player = ({ playerRef: playerRefProps }: PlayerProps) => {
           pixelsToMove,
           playerCurrentLeftPosition: getPlayerCurrentPosition('left'),
           playerCurrentTopPosition: getPlayerCurrentPosition('top'),
+        }) ||
+        !checkPlayRoomBoundaries({
+          direction,
+          pixelsToMove,
+          playerCurrentLeftPosition: getPlayerCurrentPosition('left'),
+          playerCurrentTopPosition: getPlayerCurrentPosition('top'),
+        }) ||
+        !checkHallOfFameBoundaries({
+          direction,
+          pixelsToMove,
+          playerCurrentLeftPosition: getPlayerCurrentPosition('left'),
+          playerCurrentTopPosition: getPlayerCurrentPosition('top'),
         })
       )
         return;
       playerRef.current.style[styleDirection] = `${getPlayerCurrentPosition(styleDirection) + pixelsToMove}px`;
     },
-    [playerRef, getPlayerCurrentPosition]
+    [playerRef, getPlayerCurrentPosition, checkPlayRoomBoundaries, checkHallOfFameBoundaries]
   );
 
   const handleKeyDown = useCallback(
@@ -114,15 +232,19 @@ export const Player = ({ playerRef: playerRefProps }: PlayerProps) => {
       switch (key.code) {
         case 'KeyS':
           handleChangePosition('bottom');
+          setPlayerPosition('bottom');
           break;
         case 'KeyW':
           handleChangePosition('top');
+          setPlayerPosition('top');
           break;
         case 'KeyA':
           handleChangePosition('left');
+          setPlayerPosition('left');
           break;
         case 'KeyD':
           handleChangePosition('right');
+          setPlayerPosition('right');
           break;
         default:
       }
@@ -147,7 +269,12 @@ export const Player = ({ playerRef: playerRefProps }: PlayerProps) => {
     [handleKeyDown]
   );
 
+  useEffect(() => {
+    console.log('render');
+  }, [playerPosition]);
   const handleRemoveIntervals = () => {
+    setPlayerPosition(null);
+
     if (intervalRef.current.length > 0) {
       intervalRef.current
         .slice(0, intervalRef.current.length - 1)
@@ -169,7 +296,7 @@ export const Player = ({ playerRef: playerRefProps }: PlayerProps) => {
   }, [handleAddIntervals]);
 
   return (
-    <Styled.Player ref={playerRef}>
+    <Styled.Player ref={playerRef} $direction={playerPosition}>
       <Styled.PlayerName>Kamyl</Styled.PlayerName>
     </Styled.Player>
   );
