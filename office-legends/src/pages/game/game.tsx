@@ -1,4 +1,4 @@
-import { Player, Shop } from 'components';
+import { HallOfFame, Player, PlayRoom, Shop } from 'components';
 import { useRef } from 'react';
 
 import { GameWrapper } from './game.styled';
@@ -9,6 +9,8 @@ export const GamePage = () => {
   return (
     <GameWrapper>
       <Shop />
+      <PlayRoom />
+      <HallOfFame />
       <Player playerRef={playerRef} />
     </GameWrapper>
   );
