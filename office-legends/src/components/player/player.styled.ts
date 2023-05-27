@@ -1,4 +1,5 @@
 import { keyframes, styled } from 'styled-components';
+import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
 import playerBottom1 from '../../assets/images/player1/bottom1.png';
@@ -18,9 +19,9 @@ import playerTop2 from '../../assets/images/player1/top2.png';
 import playerTop3 from '../../assets/images/player1/top3.png';
 import playerTop4 from '../../assets/images/player1/top4.png';
 
-let defaultImage: string;
+let defaultImage: string = playerBottom1;
 
-const getAnimation = (direction: 'top' | 'left' | 'right' | 'bottom' | null) => {
+const getAnimation = (direction: DirectionsType | null) => {
   const getImage1 = () => {
     if (direction === 'top') defaultImage = playerTop1;
     if (direction === 'bottom') defaultImage = playerBottom1;
@@ -52,14 +53,14 @@ const getAnimation = (direction: 'top' | 'left' | 'right' | 'bottom' | null) => 
 
   return keyframes`
   0% {  background-image: url(${getImage1()}); }
-  33% {  background-image: url(${getImage2()}); }
-  66% {  background-image: url(${getImage3()}); }
+  25% {  background-image: url(${getImage2()}); }
+  75% {  background-image: url(${getImage3()}); }
   100% {  background-image: url(${getImage4()}); }
  `;
 };
 
 type PlayerStyleProps = {
-  $direction: 'top' | 'left' | 'right' | 'bottom' | null;
+  $direction: DirectionsType | null;
 };
 
 export const Player = styled.div<PlayerStyleProps>`
