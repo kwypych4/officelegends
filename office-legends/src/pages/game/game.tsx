@@ -1,17 +1,18 @@
 import { HallOfFame, Player, PlayRoom, Shop } from 'components';
-import { useRef } from 'react';
 
+import { response } from './game.data';
 import { GameWrapper } from './game.styled';
 
 export const GamePage = () => {
-  const playerRef = useRef<HTMLDivElement | null>(null);
-
   return (
     <GameWrapper>
       <Shop />
       <PlayRoom />
       <HallOfFame />
-      <Player playerRef={playerRef} />
+      <Player isControllable />
+      {response.map(({ id, action, username }) => (
+        <Player isControllable={false} key={id} action={action} username={username} />
+      ))}
     </GameWrapper>
   );
 };
