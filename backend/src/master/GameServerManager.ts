@@ -1,4 +1,4 @@
-import { timestamp } from '../utils/DateUtils';
+import { timestamp } from './utils/DateUtils';
 
 type RegisteredServer = {
   name: string;
@@ -8,7 +8,7 @@ type RegisteredServer = {
 
 let registeredServers = Array<RegisteredServer>();
 
-const gameServersManager = {
+const gameServerManager = {
   unregisterServer: (guid: string) => {
     registeredServers = registeredServers.filter((s) => s.guid !== guid);
   },
@@ -24,4 +24,4 @@ const gameServersManager = {
   getRegisteredServers: () => [...registeredServers],
 };
 
-export { RegisteredServer, gameServersManager };
+export { RegisteredServer, gameServerManager };

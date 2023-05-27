@@ -1,10 +1,15 @@
 import { Express } from 'express';
+import fs from 'fs';
 import { login, logout, register } from './AuthController';
 import { listRunningServers, registerGameServer, unregisterGameServer } from './GameServersController';
 
 export const registerApiRoutes = (app: Express) => {
   app.get('/', (req, res) => {
     res.send('Master is running');
+  });
+
+  app.get('/tester', (req, res) => {
+    fs.createReadStream('./src/master/server/tester/index.html').pipe(res);
   });
 
   app.post('/login', async (req, res) => {

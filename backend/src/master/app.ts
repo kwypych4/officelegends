@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import session from 'express-session';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -22,10 +22,11 @@ app.use(
   })
 );
 
+app.use(json());
 app.use(sessionMiddleware);
-io.engine.use(sessionMiddleware);
-
 registerApiRoutes(app);
+
+io.engine.use(sessionMiddleware);
 registerWsRoutes(io);
 
-app.listen(port, () => console.log(`Express is listening at http://localhost:${port}`));
+server.listen(port, () => console.log(`Express is listening at http://localhost:${port}`));

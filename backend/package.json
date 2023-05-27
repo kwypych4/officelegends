@@ -7,8 +7,7 @@
     "startMaster": "npx nodemon src/master/app.ts 3000",
     "startGS1": "npx nodemon src/master/app.ts 4001",
     "startGS2": "npx nodemon src/master/app.ts 4002",
-    "lint": "eslint . --ext .ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --ext .ts"
   },
   "author": "",
   "license": "ISC",
