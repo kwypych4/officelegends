@@ -41,12 +41,16 @@ socket.on('leave', ({ playerId, gameId }) => {
   log(`Player ${playerId} has left game server ${gameId}`);
 });
 
-socket.on('move', ({ player, x, y }) => {
-  log(`Player ${player} has moved to ${x}, ${y}`);
+socket.on('move', ({ player, direction, position }) => {
+  log(`Player ${player} has moved to ${position.x}, ${position.y} in ${direction} direction`);
 });
 
 socket.on('message', (message) => {
   log(`Received message: ${message}`);
+});
+
+socket.on('status', ([players]) => {
+  log(`Status: ${players}`);
 });
 
 // Click handlers
@@ -79,9 +83,11 @@ function disconnect(e) {
 function move(e) {
   const x = document.getElementsByName('moveX')[0].value;
   const y = document.getElementsByName('moveY')[0].value;
+  const direction = document.getElementsByName('moveDirection')[0].value;
+  const position = { x, y };
 
   e.preventDefault();
-  socket.emit('move', { x, y }, (ans) => {
+  socket.emit('move', { direction, position }, (ans) => {
     log(`Move response: ${ans}`);
   });
 }

@@ -6,8 +6,11 @@ export type JoinParams = {
 };
 
 export type MoveParams = {
-  x: number;
-  y: number;
+  direction: string;
+  position: {
+    x: number;
+    y: number;
+  };
 };
 
 const registerEventHandler = (event: string, socket: Socket, handler: (args) => void) => {

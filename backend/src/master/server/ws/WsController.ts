@@ -36,7 +36,7 @@ export default class WsController {
     });
   };
 
-  handleMove = ({ x, y }: MoveParams) => {
+  handleMove = ({ direction, position }: MoveParams) => {
     const { playerId, gameId } = this.req.session;
 
     if (!playerId || !gameId) {
@@ -46,7 +46,7 @@ export default class WsController {
 
     const room = roomFromGameId(gameId);
 
-    this.io.in(room).emit('move', { player: playerId, x, y });
+    this.io.in(room).emit('move', { player: playerId, direction, position });
 
     // TODO: Relay event to the correct GS
   };
