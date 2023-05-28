@@ -43,4 +43,14 @@ const logout = (req: Request, res: Response) => {
   });
 };
 
-export { register, login, logout };
+const verifySession = async (req: Request, res: Response) => {
+  const { playerId } = req.session;
+  if (!playerId) return unauthorized('Not logged in', res);
+
+  const player = await playerUtils.findPlayerById(playerId);
+  if (!player) return unauthorized('Not logged in', res);
+
+  return ok('Logged in', res);
+};
+
+export { register, login, logout, verifySession };
