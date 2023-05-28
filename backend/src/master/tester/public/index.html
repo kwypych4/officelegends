@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>WS tester</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
-    <script src="./tester.js"></script>
+    <script src="tester.js"></script>
 </head>
 <body>
     <div class="main-container">
         <div class="main-item">
             <h1>Register</h1>
-            <form id="register-form" class="form" onsubmit="sendXhr('/register', 'POST', event)">
+            <form id="register-form" class="form" onsubmit="sendXhr('/api/register', 'POST', event)">
                 <input type="text" name="username" placeholder="Username" />
                 <input type="password" name="password" value="password" />
                 <input type="text" name="avatarId" value="1" />
@@ -20,7 +20,7 @@
         </div>
         <div class="main-item">
             <h1>Login</h1>
-            <form class="form" onsubmit="sendXhr('/login', 'POST', event)">
+            <form class="form" onsubmit="sendXhr('/api/login', 'POST', event)">
                 <input type="text" name="username" placeholder="Username" />
                 <input type="password" name="password" value="password" />
                 <input type="submit" value="Login" />
@@ -28,7 +28,7 @@
         </div>
         <div class="main-item">
             <h1>Logout</h1>
-            <form class="form" onsubmit="sendXhr('/logout', 'POST', event)">
+            <form class="form" onsubmit="sendXhr('/api/logout', 'POST', event)">
                 <input type="submit" value="Logout" />
             </form>
         </div>
@@ -36,7 +36,7 @@
     <div class="main-container">
         <div class="main-item">
             <h1>Register GS</h1>
-            <form class="form" onsubmit="sendXhr('/server/register', 'POST', event)">
+            <form class="form" onsubmit="sendXhr('/api/server/register', 'POST', event)">
                 <input type="text" name="name" value="Test GS1" />
                 <input type="text" name="guid" value="84521ffc-37e7-428c-906d-9ca749f63862" />
                 <input type="submit" value="Register server" />
@@ -44,14 +44,14 @@
         </div>
         <div class="main-item">
             <h1>Unregister GS</h1>
-            <form class="form" onsubmit="sendXhr('/server/unregister', 'POST', event)">
+            <form class="form" onsubmit="sendXhr('/api/server/unregister', 'POST', event)">
                 <input type="text" name="guid" value="84521ffc-37e7-428c-906d-9ca749f63862" />
                 <input type="submit" value="Unregister server" />
             </form>
         </div>
         <div class="main-item">
             <h1>List GSs</h1>
-            <form class="form" onsubmit="sendXhr('/server', 'GET', event)">
+            <form class="form" onsubmit="sendXhr('/api/server', 'GET', event)">
                 <input type="submit" value="List servers" />
             </form>
         </div>

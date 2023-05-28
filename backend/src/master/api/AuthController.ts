@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { hash, verify } from 'argon2';
-import { playerUtils } from '../../db/DbUtils';
-import { badRequest, ok, serverError, unauthorized } from '../../../util/JsonResponses';
+import { playerUtils } from '../db/DbUtils';
+import { badRequest, ok, serverError, unauthorized } from '../../util/JsonResponses';
 
 const register = async (username: string, password: string, avatarId: number, req: Request, res: Response) => {
   if (!password || password.length < 8) return badRequest('Password too short', res);

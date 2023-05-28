@@ -2,9 +2,9 @@ import express, { json } from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import { registerApiRoutes } from './server/api/apiRoutes';
-import { registerWsRoutes } from './server/ws/wsRoutes';
-import { registerTesterRoutes } from './server/tester/testerRoutes';
+import { registerApiRoutes } from './api/apiRoutes';
+import { registerWsRoutes } from './ws/wsRoutes';
+import { registerTesterRoutes } from './tester/testerRoutes';
 import { installSession } from './session';
 
 const port = Number(process.argv[2]);
