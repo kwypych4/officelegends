@@ -25,7 +25,7 @@ const register = async (username: string, password: string, avatarId: number, re
 const login = async (username: string, password: string, req: Request, res: Response) => {
   const player = await playerUtils.findPlayerByUsername(username);
 
-  if (!player) return unauthorized('Login failed', res);
+  if (!player || !password) return unauthorized('Login failed', res);
   if (!(await verify(player.password, password))) return unauthorized('Login failed', res);
 
   req.session.playerId = player.id;
@@ -35,10 +35,12 @@ const login = async (username: string, password: string, req: Request, res: Resp
 
 const logout = (req: Request, res: Response) => {
   req.session.destroy((e) => {
-    if (e) console.log(e);
-  });
+    if (e) {
+      return serverError('Failed to destroy session', res);
+    }
 
-  return ok(`Logout successful`, res);
+    return ok('Logout successful', res);
+  });
 };
 
 export { register, login, logout };

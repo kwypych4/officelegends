@@ -4,6 +4,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { registerApiRoutes } from './server/api/apiRoutes';
 import { registerWsRoutes } from './server/ws/wsRoutes';
+import { registerTesterRoutes } from './server/tester/testerRoutes';
 
 const port = Number(process.argv[2]);
 const app = express();
@@ -29,4 +30,7 @@ registerApiRoutes(app);
 io.engine.use(sessionMiddleware);
 registerWsRoutes(io);
 
+registerTesterRoutes(app);
+
+// eslint-disable-next-line no-console
 server.listen(port, () => console.log(`Express is listening at http://localhost:${port}`));

@@ -13,6 +13,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint', 'prettier'],
+  ignorePatterns: ['**/tester/public/*'],
   rules: {
     'prettier/prettier': [
       'error',
@@ -22,7 +23,6 @@ module.exports = {
         printWidth: 120,
       },
     ],
-
     'no-shadow': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
