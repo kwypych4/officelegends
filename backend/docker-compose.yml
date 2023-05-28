@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+  db_admin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=postgres@local.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+    ports:
+      - '443:443'
+      - '80:80'
+    volumes: 
+      - db_admin:/var/lib
+volumes:
+  db:
+    driver: local
+  db_admin:
+    driver: local
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
