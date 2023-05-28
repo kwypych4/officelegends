@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model avatar {
+  id      Int      @id @default(autoincrement())
+  bitmap  String   @unique
+  players player[]
+}
+
+model player {
+  id              Int              @id @default(autoincrement())
+  username        String           @unique
+  password        String
+  money           Int
+  exp             Int
+  avatar_id       Int
+  skin_id         Int?
+  inventory_skins inventory_skin[] @relation("inventory_skin_owner_idToplayer")
+  avatar          avatar           @relation(fields: [avatar_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_player_avatar")
+  skin            inventory_skin?  @relation("player_skin_idToinventory_skin", fields: [skin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_player_skin")
+}
+
+model inventory_skin {
+  id          Int      @id @default(autoincrement())
+  owner_id    Int
+  skin_id     Int
+  owner       player   @relation("inventory_skin_owner_idToplayer", fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_inventory_skin_owner")
+  skin        skin     @relation(fields: [skin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_inventory_skin_prototype")
+  equipped_by player[] @relation("player_skin_idToinventory_skin")
+}
+
+model skin {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  bitmap          String           @unique
+  price           Int
+  min_exp         Int
+  inventory_skins inventory_skin[]
+}
