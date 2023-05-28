@@ -1,4 +1,4 @@
-import { timestamp } from './utils/DateUtils';
+import { timestamp } from '../util/DateUtils';
 
 type RegisteredServer = {
   name: string;

@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { gameServerManager } from '../../GameServerManager';
-import { badRequest, ok } from '../../utils/ResponseUtils';
+import { badRequest, ok } from '../../../util/JsonResponses';
 
 const registerGameServer = (name: string, guid: string, res: Response) => {
   if (!name) return badRequest('Server name must be specified', res);

@@ -25,4 +25,4 @@ registerWsRoutes(io);
 registerTesterRoutes(app);
 
 // eslint-disable-next-line no-console
-server.listen(port, () => console.log(`Express is listening at http://localhost:${port}`));
+server.listen(port, () => console.log(`Master is listening at http://localhost:${port}`));
