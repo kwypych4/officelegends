@@ -2,7 +2,7 @@ import { Form, Input } from 'antd';
 import { api } from 'api';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from 'store';
+import { useAuthStore, useUserStore } from 'store';
 import { appRoutes } from 'urls';
 
 import { getRepeatPasswordRules, validationSchema } from './register-form.schema';
@@ -13,12 +13,26 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
   const mutateLogin = useCustomMutation(api.auth.register, {
     mutationKey: 'register',
-    onSuccess: () => {
+    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username }) => {
       useAuthStore.setState({ isLogged: true });
+      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username });
       navigate(appRoutes.app.game);
+    },
+    onError: () => {
+      useAuthStore.setState({ isLogged: false });
+      useUserStore.setState({
+        avatar: null,
+        exp: null,
+        gameServer: null,
+        id: null,
+        money: null,
+        skin: null,
+        username: null,
+      });
     },
     message: {
       onSuccess: 'You have been registered correctly!',
+      useResponseErrorMessage: true,
     },
   });
 

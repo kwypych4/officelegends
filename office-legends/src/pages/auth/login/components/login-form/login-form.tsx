@@ -2,7 +2,7 @@ import { Form, Input } from 'antd';
 import { api } from 'api';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from 'store';
+import { useAuthStore, useUserStore } from 'store';
 import { appRoutes } from 'urls';
 
 import { validationSchema } from './login-form.schema';
@@ -13,10 +13,23 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const mutateLogin = useCustomMutation(api.auth.login, {
     mutationKey: 'login',
-    onSuccess: () => {
-      useAuthStore.setState({ isLogged: true });
 
+    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username }) => {
+      useAuthStore.setState({ isLogged: true });
+      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username });
       navigate(appRoutes.app.game);
+    },
+    onError: () => {
+      useAuthStore.setState({ isLogged: false });
+      useUserStore.setState({
+        avatar: null,
+        exp: null,
+        gameServer: null,
+        id: null,
+        money: null,
+        skin: null,
+        username: null,
+      });
     },
   });
 
