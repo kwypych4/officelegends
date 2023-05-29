@@ -1,18 +1,10 @@
-import { HallOfFame, Player, PlayRoom, Shop } from 'components';
-
-import { response } from './game.data';
-import { GameWrapper } from './game.styled';
+import { GameChoose, PlaygroundMap } from '.';
+import { GameWrapper } from './gamew.styled';
 
 export const GamePage = () => {
   return (
     <GameWrapper>
-      <Shop />
-      <PlayRoom />
-      <HallOfFame />
-      <Player isControllable />
-      {response.map(({ id, action, username }) => (
-        <Player isControllable={false} key={id} action={action} username={username} />
-      ))}
+      <PlaygroundMap />
     </GameWrapper>
   );
 };
