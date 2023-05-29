@@ -3,6 +3,7 @@ import { api } from 'api';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from 'store';
+import { appRoutes } from 'urls';
 
 import { validationSchema } from './login-form.schema';
 import { FormInputs } from './login-form.types';
@@ -15,7 +16,7 @@ export const LoginForm = () => {
     onSuccess: () => {
       useAuthStore.setState({ isLogged: true });
 
-      navigate('/');
+      navigate(appRoutes.app.game);
     },
   });
 
@@ -28,6 +29,11 @@ export const LoginForm = () => {
     mutateLogin.mutateAsync({ ...payload });
   };
 
+  const handleRegisterButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+
+    navigate(appRoutes.auth.register);
+  };
   return (
     <Form form={form} requiredMark={false} onFinish={handleFinish}>
       <Form.Item name={FormInputs.username} rules={validationSchema[FormInputs.username]} label='Username'>
@@ -36,7 +42,12 @@ export const LoginForm = () => {
       <Form.Item name={FormInputs.password} rules={validationSchema[FormInputs.password]} label='Password'>
         <Input type='password' />
       </Form.Item>
-      <button>Login</button>
+      <div>
+        <button type='button' onClick={handleRegisterButton}>
+          Register
+        </button>
+        <button type='submit'>Login</button>
+      </div>
     </Form>
   );
 };
