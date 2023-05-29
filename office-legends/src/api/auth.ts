@@ -1,13 +1,14 @@
+import { UserStatus } from 'types';
 import { apiUrls } from 'urls';
 import { request } from 'utils';
 
-type LoginRequest = object;
-type LoginResponse = { message: string };
-type LoginReturn = Promise<LoginResponse>;
-type LoginProps = {
+type LoginRequest = {
   username: string;
   password: string;
-} & LoginRequest;
+};
+type LoginResponse = UserStatus;
+type LoginReturn = Promise<LoginResponse>;
+type LoginProps = LoginRequest;
 
 export const login = async (payload: LoginProps): LoginReturn => {
   const url = apiUrls.login();
@@ -16,13 +17,13 @@ export const login = async (payload: LoginProps): LoginReturn => {
 
   return data;
 };
-type RegisterRequest = object;
-type RegisterResponse = { message: string };
-type RegisterReturn = Promise<RegisterResponse>;
-type RegisterProps = {
+type RegisterRequest = {
   username: string;
   password: string;
-} & RegisterRequest;
+};
+type RegisterResponse = UserStatus;
+type RegisterReturn = Promise<RegisterResponse>;
+type RegisterProps = RegisterRequest;
 
 export const register = async (payload: RegisterProps): RegisterReturn => {
   const url = apiUrls.register();
@@ -38,8 +39,8 @@ export const register = async (payload: RegisterProps): RegisterReturn => {
 };
 
 type VerifyRequest = object;
-type VerifyResponse = { message: string };
-type VerifyReturn = Promise<LoginResponse>;
+type VerifyResponse = UserStatus;
+type VerifyReturn = Promise<VerifyResponse>;
 
 export const verify = async (): VerifyReturn => {
   const url = apiUrls.verify();
