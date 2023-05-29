@@ -1,5 +1,5 @@
 import { GameChoose, PlaygroundMap } from '.';
-import { GameWrapper } from './gamew.styled';
+import { GameWrapper } from './game.styled';
 
 export const GamePage = () => {
   return (
