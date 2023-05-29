@@ -1,2 +1,2 @@
-export type QueryKeys = 'test';
-export type MutationKeys = 'login';
+export type QueryKeys = 'verify';
+export type MutationKeys = 'login' | 'register';
