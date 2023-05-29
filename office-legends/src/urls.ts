@@ -9,6 +9,7 @@ export const appUrls = {
     base: '',
     pages: {
       login: 'login',
+      register: 'register',
     },
   },
   error: {
@@ -26,6 +27,7 @@ export const appRoutes = {
   },
   auth: {
     login: `${appUrls.auth.base}/${appUrls.auth.pages.login}`,
+    register: `${appUrls.auth.base}/${appUrls.auth.pages.register}`,
   },
   error: {
     notFound: `${appUrls.error.base}/${appUrls.error.pages.notFound}`,
@@ -40,4 +42,6 @@ const url = (url: string) => (options?: { [key: string]: string | number | Array
 
 export const apiUrls = {
   login: url('login'),
+  register: url('register'),
+  verify: url('verify'),
 };
