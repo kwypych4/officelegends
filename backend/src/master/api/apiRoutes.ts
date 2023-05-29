@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import { login, logout, register } from './AuthController';
+import { login, logout, register, verifySession } from './AuthController';
 import { listRunningServers, registerGameServer, unregisterGameServer } from './GameServersController';
 
 export const registerApiRoutes = (app: Express) => {
@@ -21,6 +21,10 @@ export const registerApiRoutes = (app: Express) => {
 
   app.post('/api/logout', async (req, res) => {
     await logout(req, res);
+  });
+
+  app.get('/api/verify', async (req, res) => {
+    await verifySession(req, res);
   });
 
   app.post('/api/server/register', (req, res) => {
