@@ -23,9 +23,21 @@ export const form = css`
           div {
             .ant-form-item-explain {
               font-size: 8px;
+              .ant-form-item-explain-error {
+                max-width: 310px;
+              }
             }
           }
         }
+      }
+    }
+    div:has(button) {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      button {
+        margin: unset;
       }
     }
   }
