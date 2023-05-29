@@ -1,8 +1,7 @@
 import { App } from 'antd';
 import { AxiosError } from 'axios';
 import { MutationFunction, useMutation, UseMutationOptions, UseMutationResult, useQueryClient } from 'react-query';
-import { MutationKeys, QueryKeys } from 'types';
-import { MessagesTypes } from 'types/query-message.types';
+import { MessagesTypes, MutationKeys, QueryKeys } from 'types';
 
 type TCustomQueryOptions = {
   message?: MessagesTypes;

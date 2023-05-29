@@ -2,9 +2,7 @@ import { App } from 'antd';
 import { AxiosError } from 'axios';
 import { QueryFunction, useQuery, useQueryClient, UseQueryOptions, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from 'store';
-import { QueryKeys } from 'types';
-import { MessagesTypes } from 'types/query-message.types';
+import { MessagesTypes, QueryKeys } from 'types';
 import { appRoutes } from 'urls';
 
 type TCustomQueryOptions = {
@@ -40,12 +38,10 @@ export const useCustomQuery = <QueryReturnType>(
     },
     onError: (error) => {
       if (error.response?.status === 401 && error.response?.data.error === 'You are not logged in!') {
-        useAuthStore.setState({ isLogged: false, accessToken: '' });
         notification.warning({ message: error.response.data?.error });
       }
 
       if (error.response?.status === 403 && error.response?.data.error === 'Your session has expired!') {
-        useAuthStore.setState({ isLogged: false, accessToken: '' });
         notification.warning({ message: error.response.data?.error });
         navigate(appRoutes.auth.login);
       } else if (error.response?.status === 403) {
