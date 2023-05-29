@@ -1,4 +1,4 @@
-import { DirectionsType } from './directions.type';
+import { DirectionsType } from './directions.types';
 
 export type WebsocketRequestType = {
   direction: DirectionsType;
