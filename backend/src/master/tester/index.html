@@ -41,29 +41,6 @@
     </div>
     <div class="main-container">
         <div class="main-item">
-            <h1>Register GS</h1>
-            <form class="form" onsubmit="sendXhr('/api/server/register', 'POST', event)">
-                <input type="text" name="name" value="Test GS1" />
-                <input type="text" name="guid" value="84521ffc-37e7-428c-906d-9ca749f63862" />
-                <input type="submit" value="Register server" />
-            </form>
-        </div>
-        <div class="main-item">
-            <h1>Unregister GS</h1>
-            <form class="form" onsubmit="sendXhr('/api/server/unregister', 'POST', event)">
-                <input type="text" name="guid" value="84521ffc-37e7-428c-906d-9ca749f63862" />
-                <input type="submit" value="Unregister server" />
-            </form>
-        </div>
-        <div class="main-item">
-            <h1>List GSs</h1>
-            <form class="form" onsubmit="sendXhr('/api/server', 'GET', event)">
-                <input type="submit" value="List servers" />
-            </form>
-        </div>
-    </div>
-    <div class="main-container">
-        <div class="main-item">
             <h1>Connect</h1>
             <form class="form" onsubmit="connect(event)">
                 <input type="submit" value="Connect" />

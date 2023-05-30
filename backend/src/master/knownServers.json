@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Main server",
+    "uuid": "a5430afa-94ed-4156-a8f6-d9667a136b8b",
+    "address": "http://localhost:4001/rpc"
+  },
+  {
+    "name": "Hall of Fame",
+    "uuid": "b851e782-132d-41b5-913c-6318bab0979b",
+    "address": "http://localhost:4002/rpc"
+  }
+]

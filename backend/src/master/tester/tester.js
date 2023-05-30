@@ -33,24 +33,20 @@ socket.on('disconnect', () => {
   log('Disconnected');
 });
 
-socket.on('join', ({ playerId, gameId }) => {
-  log(`Player ${playerId} has joined the ${gameId} GS`);
+socket.on('join', (data) => {
+  log(`WS join -> ${JSON.stringify(data)}`);
 });
 
-socket.on('leave', ({ playerId, gameId }) => {
-  log(`Player ${playerId} has left game server ${gameId}`);
+socket.on('leave', (data) => {
+  log(`WS leave -> ${JSON.stringify(data)}`);
 });
 
-socket.on('move', ({ player, direction, position }) => {
-  log(`Player ${player} has moved to ${position.x}, ${position.y} in ${direction} direction`);
+socket.on('move', (data) => {
+  log(`WS move -> ${JSON.stringify(data)}`);
 });
 
 socket.on('message', (message) => {
   log(`Received message: ${message}`);
-});
-
-socket.on('status', ([players]) => {
-  log(`Status: ${players}`);
 });
 
 // Click handlers
@@ -87,9 +83,7 @@ function move(e) {
   const position = { x, y };
 
   e.preventDefault();
-  socket.emit('move', { direction, position }, (ans) => {
-    log(`Move response: ${ans}`);
-  });
+  socket.emit('move', { direction, position });
 }
 
 function clearLogs() {

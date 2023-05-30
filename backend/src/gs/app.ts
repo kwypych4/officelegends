@@ -1,15 +1,15 @@
 import { JSONRPCServer } from 'json-rpc-2.0';
-import express from 'express';
-import * as crypto from 'crypto';
+import express, { json } from 'express';
 import { setupRpcServer } from './rpc/rpcServer';
 import { registerRpcRoutes } from './rpc/rpcRoutes';
+import { argv } from './argv';
 
-const port = Number(process.argv[2]);
-const serverName = process.argv[3];
-const uuid = crypto.randomUUID();
+const { port, serverName, uuid } = argv;
 
 const app = express();
 const rpcServer = new JSONRPCServer();
+
+app.use(json());
 
 setupRpcServer(app, rpcServer);
 registerRpcRoutes(rpcServer);
