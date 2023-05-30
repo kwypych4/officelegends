@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -6,7 +6,11 @@ const basicSkinId = 1;
 
 const playerFullInclude = {
   avatar: true,
-  skin: true,
+  skin: {
+    include: {
+      skin: true,
+    },
+  },
   inventory_skins: {
     include: {
       skin: true,
@@ -25,7 +29,7 @@ const inventoryUtils = {
 };
 
 const playerUtils = {
-  findPlayerById: (id: number) =>
+  findPlayerById: async (id: number) =>
     prisma.player.findFirst({
       where: {
         id,
@@ -79,6 +83,13 @@ const playerUtils = {
       });
 
       return p;
+    }),
+  updatePlayer: async (playerId: number, data: Prisma.playerUpdateInput) =>
+    prisma.player.update({
+      where: {
+        id: playerId,
+      },
+      data,
     }),
 };
 

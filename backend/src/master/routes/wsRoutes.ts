@@ -1,17 +1,6 @@
 import { Server, Socket } from 'socket.io';
-import WsController from './WsController';
-
-export type JoinParams = {
-  gameId: number;
-};
-
-export type MoveParams = {
-  direction: string;
-  position: {
-    x: number;
-    y: number;
-  };
-};
+import WsController from '../controller/WsController';
+import { JoinParams, MoveParams } from '../WsProtocol';
 
 const registerEventHandler = (event: string, socket: Socket, handler: (args) => void) => {
   socket.on(event, (args) => {
