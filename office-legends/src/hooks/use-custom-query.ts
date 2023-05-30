@@ -1,9 +1,7 @@
 import { App } from 'antd';
 import { AxiosError } from 'axios';
 import { QueryFunction, useQuery, useQueryClient, UseQueryOptions, UseQueryResult } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { MessagesTypes, QueryKeys } from 'types';
-import { appRoutes } from 'urls';
 
 type TCustomQueryOptions = {
   message?: MessagesTypes;
@@ -23,7 +21,6 @@ export const useCustomQuery = <QueryReturnType>(
 ): TQueryResult<QueryReturnType> => {
   const { notification } = App.useApp();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   return useQuery(queryKey, queryFn, {
     onSuccess: (success) => {
       if (options?.onSuccess) {
@@ -37,20 +34,6 @@ export const useCustomQuery = <QueryReturnType>(
       }
     },
     onError: (error) => {
-      if (error.response?.status === 401 && error.response?.data.error === 'You are not logged in!') {
-        notification.warning({ message: error.response.data?.error });
-      }
-
-      if (error.response?.status === 403 && error.response?.data.error === 'Your session has expired!') {
-        notification.warning({ message: error.response.data?.error });
-        navigate(appRoutes.auth.login);
-      } else if (error.response?.status === 403) {
-        navigate(appRoutes.error.forbidden);
-      }
-      if (error.response?.status === 404) {
-        navigate(appRoutes.error.notFound);
-      }
-
       if (options?.onError) {
         options?.onError(error);
       }
