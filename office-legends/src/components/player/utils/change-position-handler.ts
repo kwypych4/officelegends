@@ -1,7 +1,13 @@
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
-import { checkBoundaries, checkHallOfFameBoundaries, checkPlayRoomBoundaries, checkShopBoundaries } from '.';
+import {
+  checkBoundaries,
+  checkDoorsBoundaries,
+  checkHallOfFameBoundaries,
+  checkPlayRoomBoundaries,
+  checkShopBoundaries,
+} from '.';
 
 const getPlayerCurrentPosition = (
   styleDirection: 'top' | 'left',
@@ -11,27 +17,37 @@ const getPlayerCurrentPosition = (
   return Number(playerRef.current.style[styleDirection].toString().slice(0, -2));
 };
 
-export const handleChangePosition = ({
+const getBoundaries = ({
+  world,
   direction,
+  pixelsToMove,
+  styleDirection,
   playerRef,
-  playerPosition,
-  setPlayerPosition,
+  isOpenKeyActive,
 }: {
+  world: number;
   direction: DirectionsType | null;
+  pixelsToMove: number;
+  styleDirection: 'top' | 'left';
   playerRef: React.MutableRefObject<HTMLDivElement | null>;
-  playerPosition: DirectionsType | null;
-  setPlayerPosition: React.Dispatch<React.SetStateAction<DirectionsType | null>>;
+  isOpenKeyActive: boolean;
 }) => {
-  if (!playerRef.current) return;
-  const playerReference = playerRef.current;
-  const styleDirection = direction === 'bottom' || direction === 'top' ? 'top' : 'left';
-  const pixelsToMove =
-    direction === 'bottom' || direction === 'right' ? variables.PLAYER_MOVE_PIXELS : variables.PLAYER_MOVE_PIXELS * -1;
+  if (world === 2)
+    return (
+      !checkBoundaries({
+        direction,
+        pixelsToMove,
+        playerCurrentPosition: getPlayerCurrentPosition(styleDirection, playerRef),
+        topBoundaryPixels: variables.HALL_OF_FAME_WORLD_TOP,
+      }) ||
+      !checkDoorsBoundaries({
+        playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
+        playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
+        isOpenKeyActive,
+      })
+    );
 
-  if (direction !== playerPosition) setPlayerPosition(direction);
-
-  if (direction === null) return;
-  if (
+  return (
     !checkBoundaries({
       direction,
       pixelsToMove,
@@ -42,21 +58,50 @@ export const handleChangePosition = ({
       pixelsToMove,
       playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
       playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
+      isOpenKeyActive,
     }) ||
     !checkPlayRoomBoundaries({
       direction,
       pixelsToMove,
       playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
       playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
+      isOpenKeyActive,
     }) ||
     !checkHallOfFameBoundaries({
       direction,
       pixelsToMove,
       playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
       playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
+      isOpenKeyActive,
     })
-  )
-    return;
+  );
+};
+
+export const handleChangePosition = ({
+  direction,
+  playerRef,
+  playerPosition,
+  world,
+  setPlayerPosition,
+  isOpenKeyActive,
+}: {
+  direction: DirectionsType | null;
+  playerRef: React.MutableRefObject<HTMLDivElement | null>;
+  playerPosition: DirectionsType | null;
+  world: number;
+  setPlayerPosition: React.Dispatch<React.SetStateAction<DirectionsType | null>>;
+  isOpenKeyActive: boolean;
+}) => {
+  if (!playerRef.current) return;
+  const playerReference = playerRef.current;
+  const styleDirection = direction === 'bottom' || direction === 'top' ? 'top' : 'left';
+  const pixelsToMove =
+    direction === 'bottom' || direction === 'right' ? variables.PLAYER_MOVE_PIXELS : variables.PLAYER_MOVE_PIXELS * -1;
+
+  if (direction !== playerPosition) setPlayerPosition(direction);
+
+  if (getBoundaries({ world, direction, pixelsToMove, playerRef, styleDirection, isOpenKeyActive })) return;
+  if (direction === null) return;
   playerReference.style[styleDirection] = `${getPlayerCurrentPosition(styleDirection, playerRef) + pixelsToMove}px`;
 
   // const request: WebsocketRequestType = {

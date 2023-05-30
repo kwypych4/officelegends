@@ -1,3 +1,4 @@
+import { useGameStore, useUserStore } from 'store';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
@@ -5,10 +6,12 @@ export const checkBoundaries = ({
   direction,
   playerCurrentPosition,
   pixelsToMove,
+  topBoundaryPixels,
 }: {
-  direction: DirectionsType;
+  direction: DirectionsType | null;
   playerCurrentPosition: number;
   pixelsToMove: number;
+  topBoundaryPixels?: number;
 }) => {
   if (direction === 'right' && playerCurrentPosition + pixelsToMove >= variables.BOARD_WIDTH - variables.PLAYER_WIDTH)
     return false;
@@ -21,7 +24,7 @@ export const checkBoundaries = ({
   )
     return false;
 
-  if (direction === 'top' && playerCurrentPosition + pixelsToMove <= 0) return false;
+  if (direction === 'top' && playerCurrentPosition + pixelsToMove <= (topBoundaryPixels || 0)) return false;
 
   return true;
 };
@@ -31,11 +34,13 @@ export const checkShopBoundaries = ({
   playerCurrentTopPosition,
   playerCurrentLeftPosition,
   pixelsToMove,
+  isOpenKeyActive,
 }: {
-  direction: DirectionsType;
+  direction: DirectionsType | null;
   playerCurrentTopPosition: number;
   playerCurrentLeftPosition: number;
   pixelsToMove: number;
+  isOpenKeyActive: boolean;
 }) => {
   if (
     direction === 'left' &&
@@ -61,10 +66,12 @@ export const checkShopBoundaries = ({
   }
 
   if (
+    isOpenKeyActive &&
+    direction === null &&
     playerCurrentTopPosition <= variables.SHOP_HEIGHT + variables.INTERACTION_MARGIN &&
     playerCurrentLeftPosition <= variables.SHOP_WIDTH + variables.INTERACTION_MARGIN - variables.PLAYER_WIDTH
   ) {
-    console.log('shop margin');
+    console.log('shop open');
   }
 
   return true;
@@ -75,11 +82,13 @@ export const checkPlayRoomBoundaries = ({
   playerCurrentTopPosition,
   playerCurrentLeftPosition,
   pixelsToMove,
+  isOpenKeyActive,
 }: {
-  direction: DirectionsType;
+  direction: DirectionsType | null;
   playerCurrentTopPosition: number;
   playerCurrentLeftPosition: number;
   pixelsToMove: number;
+  isOpenKeyActive: boolean;
 }) => {
   if (
     direction === 'left' &&
@@ -104,6 +113,8 @@ export const checkPlayRoomBoundaries = ({
     return false;
 
   if (
+    isOpenKeyActive &&
+    direction === null &&
     playerCurrentTopPosition <= variables.PLAYROOM_HEIGHT + variables.INTERACTION_MARGIN &&
     playerCurrentLeftPosition <=
       variables.PLAYROOM_LEFT_POS + variables.PLAYROOM_WIDTH + variables.INTERACTION_MARGIN - 10 &&
@@ -120,11 +131,13 @@ export const checkHallOfFameBoundaries = ({
   playerCurrentTopPosition,
   playerCurrentLeftPosition,
   pixelsToMove,
+  isOpenKeyActive,
 }: {
-  direction: DirectionsType;
+  direction: DirectionsType | null;
   playerCurrentTopPosition: number;
   playerCurrentLeftPosition: number;
   pixelsToMove: number;
+  isOpenKeyActive: boolean;
 }) => {
   if (
     direction === 'left' &&
@@ -151,12 +164,37 @@ export const checkHallOfFameBoundaries = ({
   }
 
   if (
+    isOpenKeyActive &&
+    direction === null &&
     playerCurrentTopPosition <= variables.HALL_OF_FAME_HEIGHT + variables.INTERACTION_MARGIN &&
     playerCurrentLeftPosition <=
-      variables.HALL_OF_FAME_LEFT_POS + variables.HALL_OF_FAME_WIDTH + variables.INTERACTION_MARGIN - 10 &&
-    playerCurrentLeftPosition >= variables.HALL_OF_FAME_LEFT_POS + variables.INTERACTION_MARGIN + variables.PLAYER_WIDTH
+      variables.HALL_OF_FAME_LEFT_POS + variables.HALL_OF_FAME_WIDTH - variables.INTERACTION_MARGIN &&
+    playerCurrentLeftPosition >= variables.HALL_OF_FAME_LEFT_POS + variables.INTERACTION_MARGIN
   ) {
-    console.log('hall of fame margin');
+    useUserStore.setState({ gameServer: 2 });
+  }
+
+  return true;
+};
+
+export const checkDoorsBoundaries = ({
+  playerCurrentTopPosition,
+  playerCurrentLeftPosition,
+  isOpenKeyActive,
+}: {
+  playerCurrentTopPosition: number;
+  playerCurrentLeftPosition: number;
+  isOpenKeyActive: boolean;
+}) => {
+  if (
+    playerCurrentTopPosition <= variables.DOORS_TOP_POS + variables.PLAYER_HEIGHT &&
+    playerCurrentTopPosition >= variables.DOORS_TOP_POS - variables.DOORS_HEIGHT &&
+    playerCurrentLeftPosition <= 0 + variables.DOORS_WIDTH + variables.INTERACTION_MARGIN
+  ) {
+    if (isOpenKeyActive) useUserStore.setState({ gameServer: 1 });
+    useGameStore.setState({ isHallOfFameDoorOpen: true });
+  } else {
+    useGameStore.setState({ isHallOfFameDoorOpen: false });
   }
 
   return true;
