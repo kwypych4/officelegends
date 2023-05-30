@@ -9,9 +9,9 @@ export const PlaygroundMap = () => {
       <Shop />
       <PlayRoom />
       <HallOfFame />
-      <Player isControllable />
+      <Player gameServer={1} isControllable />
       {response.map(({ id, action, username }) => (
-        <Player isControllable={false} key={id} action={action} username={username} />
+        <Player gameServer={1} isControllable={false} key={id} action={action} username={username} />
       ))}
     </GameWrapper>
   );
