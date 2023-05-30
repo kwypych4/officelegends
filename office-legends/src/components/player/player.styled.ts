@@ -1,4 +1,5 @@
 import { keyframes, styled } from 'styled-components';
+import { colors } from 'styles';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
@@ -74,13 +75,14 @@ export const Player = styled.div<PlayerStyleProps>`
   animation-iteration-count: infinite;
 `;
 
-export const PlayerName = styled.span`
+export const PlayerName = styled.div`
   position: absolute;
-  top: -20px;
-  display: block;
-  width: 100%;
-  text-align: center;
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  width: fit-content;
+  background-color: ${colors.black}ab;
+  color: white;
+  padding: 2px 10px;
 `;
