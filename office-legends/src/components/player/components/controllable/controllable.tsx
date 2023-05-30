@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
-export const ControllablePlayer = () => {
-  const intervalRef = useRef<Array<number>>([]);
+export const ControllablePlayer = ({ world }: { world: number }) => {
+  const intervalRef = useRef<Array<NodeJS.Timer>>([]);
   const playerRef = useRef<HTMLDivElement | null>(null);
   const [playerPosition, setPlayerPosition] = useState<DirectionsType | null>(null);
 
@@ -13,21 +13,59 @@ export const ControllablePlayer = () => {
     (key: KeyboardEvent) => {
       switch (key.code) {
         case 'KeyS':
-          handleChangePosition({ direction: 'bottom', playerPosition, playerRef, setPlayerPosition });
+          handleChangePosition({
+            world,
+            direction: 'bottom',
+            playerPosition,
+            playerRef,
+            setPlayerPosition,
+            isOpenKeyActive: false,
+          });
           break;
         case 'KeyW':
-          handleChangePosition({ direction: 'top', playerPosition, playerRef, setPlayerPosition });
+          handleChangePosition({
+            world,
+            direction: 'top',
+            playerPosition,
+            playerRef,
+            setPlayerPosition,
+            isOpenKeyActive: false,
+          });
           break;
         case 'KeyA':
-          handleChangePosition({ direction: 'left', playerPosition, playerRef, setPlayerPosition });
+          handleChangePosition({
+            world,
+            direction: 'left',
+            playerPosition,
+            playerRef,
+            setPlayerPosition,
+            isOpenKeyActive: false,
+          });
           break;
         case 'KeyD':
-          handleChangePosition({ direction: 'right', playerPosition, playerRef, setPlayerPosition });
+          handleChangePosition({
+            world,
+            direction: 'right',
+            playerPosition,
+            playerRef,
+            setPlayerPosition,
+            isOpenKeyActive: false,
+          });
+          break;
+        case 'KeyE':
+          handleChangePosition({
+            world,
+            direction: null,
+            playerPosition,
+            playerRef,
+            setPlayerPosition,
+            isOpenKeyActive: true,
+          });
           break;
         default:
       }
     },
-    [playerPosition]
+    [playerPosition, world]
   );
 
   const handleAddIntervals = useCallback(

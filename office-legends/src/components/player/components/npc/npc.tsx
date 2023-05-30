@@ -6,7 +6,7 @@ import { variables } from 'variables';
 
 import { NPCPlayerProps } from './npc.types';
 
-export const NPCPlayer = ({ action, username }: NPCPlayerProps) => {
+export const NPCPlayer = ({ world, action, username }: NPCPlayerProps) => {
   const playerRef = useRef<HTMLDivElement | null>(null);
   const [playerPosition, setPlayerPosition] = useState<DirectionsType | null>(null);
 
@@ -14,10 +14,17 @@ export const NPCPlayer = ({ action, username }: NPCPlayerProps) => {
     setTimeout(() => setPlayerPosition(null), action.length * variables.INTERVAL_REFRESH);
     action.forEach((direction, index) => {
       setTimeout(() => {
-        handleChangePosition({ direction: direction as any, playerPosition, playerRef, setPlayerPosition });
+        handleChangePosition({
+          world,
+          direction: direction as any,
+          playerPosition,
+          playerRef,
+          setPlayerPosition,
+          isOpenKeyActive: false,
+        });
       }, variables.INTERVAL_REFRESH * index + 1);
     });
-  }, [action, playerPosition]);
+  }, [action, playerPosition, world]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => test2(), []);
