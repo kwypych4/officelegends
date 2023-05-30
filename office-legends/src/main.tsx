@@ -1,3 +1,4 @@
+import { App } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -17,8 +18,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>
   // TODO: add dependency if dev
   <QueryClientProvider client={queryClient}>
-    <GlobalStyles />
-    <RouterProvider router={Router} />
+    <App>
+      <GlobalStyles />
+      <RouterProvider router={Router} />
+    </App>
   </QueryClientProvider>
 
   // </React.StrictMode>
