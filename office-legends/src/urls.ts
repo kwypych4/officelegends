@@ -42,6 +42,7 @@ const url = (url: string) => (options?: { [key: string]: string | number | Array
 
 export const apiUrls = {
   login: url('login'),
+  logout: url('logout'),
   register: url('register'),
   verify: url('verify'),
 };

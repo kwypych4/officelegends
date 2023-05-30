@@ -49,3 +49,15 @@ export const verify = async (): VerifyReturn => {
 
   return data;
 };
+
+type LogoutRequest = object;
+type LogoutResponse = object;
+type LogoutReturn = Promise<LogoutResponse>;
+
+export const logout = async (): LogoutReturn => {
+  const url = apiUrls.logout();
+
+  const { data } = await request<LogoutResponse, LogoutRequest>(url, 'POST');
+
+  return data;
+};
