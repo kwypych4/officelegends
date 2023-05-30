@@ -24,6 +24,7 @@ const getBoundaries = ({
   styleDirection,
   playerRef,
   isOpenKeyActive,
+  isControllablePlayer,
 }: {
   world: number;
   direction: DirectionsType | null;
@@ -31,6 +32,7 @@ const getBoundaries = ({
   styleDirection: 'top' | 'left';
   playerRef: React.MutableRefObject<HTMLDivElement | null>;
   isOpenKeyActive: boolean;
+  isControllablePlayer: boolean;
 }) => {
   if (world === 2)
     return (
@@ -44,6 +46,7 @@ const getBoundaries = ({
         playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
         playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
         isOpenKeyActive,
+        isControllablePlayer,
       })
     );
 
@@ -59,6 +62,7 @@ const getBoundaries = ({
       playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
       playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
       isOpenKeyActive,
+      isControllablePlayer,
     }) ||
     !checkPlayRoomBoundaries({
       direction,
@@ -66,6 +70,7 @@ const getBoundaries = ({
       playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
       playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
       isOpenKeyActive,
+      isControllablePlayer,
     }) ||
     !checkHallOfFameBoundaries({
       direction,
@@ -73,6 +78,7 @@ const getBoundaries = ({
       playerCurrentLeftPosition: getPlayerCurrentPosition('left', playerRef),
       playerCurrentTopPosition: getPlayerCurrentPosition('top', playerRef),
       isOpenKeyActive,
+      isControllablePlayer,
     })
   );
 };
@@ -84,6 +90,7 @@ export const handleChangePosition = ({
   world,
   setPlayerPosition,
   isOpenKeyActive,
+  isControllablePlayer,
 }: {
   direction: DirectionsType | null;
   playerRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -91,6 +98,7 @@ export const handleChangePosition = ({
   world: number;
   setPlayerPosition: React.Dispatch<React.SetStateAction<DirectionsType | null>>;
   isOpenKeyActive: boolean;
+  isControllablePlayer: boolean;
 }) => {
   if (!playerRef.current) return;
   const playerReference = playerRef.current;
@@ -100,7 +108,10 @@ export const handleChangePosition = ({
 
   if (direction !== playerPosition) setPlayerPosition(direction);
 
-  if (getBoundaries({ world, direction, pixelsToMove, playerRef, styleDirection, isOpenKeyActive })) return;
+  if (
+    getBoundaries({ world, direction, pixelsToMove, playerRef, styleDirection, isOpenKeyActive, isControllablePlayer })
+  )
+    return;
   if (direction === null) return;
   playerReference.style[styleDirection] = `${getPlayerCurrentPosition(styleDirection, playerRef) + pixelsToMove}px`;
 

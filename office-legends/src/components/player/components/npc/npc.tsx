@@ -21,6 +21,7 @@ export const NPCPlayer = ({ world, action, username }: NPCPlayerProps) => {
           playerRef,
           setPlayerPosition,
           isOpenKeyActive: false,
+          isControllablePlayer: false,
         });
       }, variables.INTERVAL_REFRESH * index + 1);
     });

@@ -20,6 +20,7 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
             playerRef,
             setPlayerPosition,
             isOpenKeyActive: false,
+            isControllablePlayer: true,
           });
           break;
         case 'KeyW':
@@ -30,6 +31,7 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
             playerRef,
             setPlayerPosition,
             isOpenKeyActive: false,
+            isControllablePlayer: true,
           });
           break;
         case 'KeyA':
@@ -40,6 +42,7 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
             playerRef,
             setPlayerPosition,
             isOpenKeyActive: false,
+            isControllablePlayer: true,
           });
           break;
         case 'KeyD':
@@ -50,6 +53,7 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
             playerRef,
             setPlayerPosition,
             isOpenKeyActive: false,
+            isControllablePlayer: true,
           });
           break;
         case 'KeyE':
@@ -60,6 +64,7 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
             playerRef,
             setPlayerPosition,
             isOpenKeyActive: true,
+            isControllablePlayer: true,
           });
           break;
         default:
@@ -116,7 +121,9 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
 
   return (
     <Styled.Player ref={playerRef} $direction={playerPosition}>
-      <Styled.PlayerName>Kamyl22</Styled.PlayerName>
+      <Styled.PlayerName>
+        <div>Kamyl22</div>
+      </Styled.PlayerName>
     </Styled.Player>
   );
 };

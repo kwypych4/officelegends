@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { useGameStore, useUserStore } from 'store';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
@@ -35,12 +36,14 @@ export const checkShopBoundaries = ({
   playerCurrentLeftPosition,
   pixelsToMove,
   isOpenKeyActive,
+  isControllablePlayer,
 }: {
   direction: DirectionsType | null;
   playerCurrentTopPosition: number;
   playerCurrentLeftPosition: number;
   pixelsToMove: number;
   isOpenKeyActive: boolean;
+  isControllablePlayer: boolean;
 }) => {
   if (
     direction === 'left' &&
@@ -66,14 +69,15 @@ export const checkShopBoundaries = ({
   }
 
   if (
-    isOpenKeyActive &&
-    direction === null &&
+    isControllablePlayer &&
     playerCurrentTopPosition <= variables.SHOP_HEIGHT + variables.INTERACTION_MARGIN &&
     playerCurrentLeftPosition <= variables.SHOP_WIDTH + variables.INTERACTION_MARGIN - variables.PLAYER_WIDTH
   ) {
-    console.log('shop open');
-  }
+    if (isOpenKeyActive && direction === null) useGameStore.setState({ isShopOpened: true });
 
+    if (!isOpenKeyActive)
+      return message.info({ content: 'Press "E" key to open the shop.', key: 'shop', duration: 1.5 });
+  }
   return true;
 };
 
@@ -83,12 +87,14 @@ export const checkPlayRoomBoundaries = ({
   playerCurrentLeftPosition,
   pixelsToMove,
   isOpenKeyActive,
+  isControllablePlayer,
 }: {
   direction: DirectionsType | null;
   playerCurrentTopPosition: number;
   playerCurrentLeftPosition: number;
   pixelsToMove: number;
   isOpenKeyActive: boolean;
+  isControllablePlayer: boolean;
 }) => {
   if (
     direction === 'left' &&
@@ -113,14 +119,15 @@ export const checkPlayRoomBoundaries = ({
     return false;
 
   if (
-    isOpenKeyActive &&
-    direction === null &&
+    isControllablePlayer &&
     playerCurrentTopPosition <= variables.PLAYROOM_HEIGHT + variables.INTERACTION_MARGIN &&
     playerCurrentLeftPosition <=
       variables.PLAYROOM_LEFT_POS + variables.PLAYROOM_WIDTH + variables.INTERACTION_MARGIN - 10 &&
     playerCurrentLeftPosition >= variables.PLAYROOM_LEFT_POS + variables.INTERACTION_MARGIN + variables.PLAYER_WIDTH
   ) {
-    console.log('playroom margin');
+    if (isOpenKeyActive && direction === null) useGameStore.setState({ isPlayroomOpened: true });
+    if (!isOpenKeyActive)
+      return message.info({ content: 'Press "E" key to open the playroom.', key: 'playroom', duration: 1.5 });
   }
 
   return true;
@@ -132,12 +139,14 @@ export const checkHallOfFameBoundaries = ({
   playerCurrentLeftPosition,
   pixelsToMove,
   isOpenKeyActive,
+  isControllablePlayer,
 }: {
   direction: DirectionsType | null;
   playerCurrentTopPosition: number;
   playerCurrentLeftPosition: number;
   pixelsToMove: number;
   isOpenKeyActive: boolean;
+  isControllablePlayer: boolean;
 }) => {
   if (
     direction === 'left' &&
@@ -164,14 +173,15 @@ export const checkHallOfFameBoundaries = ({
   }
 
   if (
-    isOpenKeyActive &&
-    direction === null &&
+    isControllablePlayer &&
     playerCurrentTopPosition <= variables.HALL_OF_FAME_HEIGHT + variables.INTERACTION_MARGIN &&
     playerCurrentLeftPosition <=
       variables.HALL_OF_FAME_LEFT_POS + variables.HALL_OF_FAME_WIDTH - variables.INTERACTION_MARGIN &&
     playerCurrentLeftPosition >= variables.HALL_OF_FAME_LEFT_POS + variables.INTERACTION_MARGIN
   ) {
-    useUserStore.setState({ gameServer: 2 });
+    if (!isOpenKeyActive)
+      return message.info({ content: 'Press "E" key to move to Hall of fame.', key: 'hallOfFame', duration: 1.5 });
+    if (isOpenKeyActive && direction === null) useUserStore.setState({ gameServer: 2 });
   }
 
   return true;
@@ -181,18 +191,22 @@ export const checkDoorsBoundaries = ({
   playerCurrentTopPosition,
   playerCurrentLeftPosition,
   isOpenKeyActive,
+  isControllablePlayer,
 }: {
   playerCurrentTopPosition: number;
   playerCurrentLeftPosition: number;
   isOpenKeyActive: boolean;
+  isControllablePlayer: boolean;
 }) => {
   if (
     playerCurrentTopPosition <= variables.DOORS_TOP_POS + variables.PLAYER_HEIGHT &&
     playerCurrentTopPosition >= variables.DOORS_TOP_POS - variables.DOORS_HEIGHT &&
     playerCurrentLeftPosition <= 0 + variables.DOORS_WIDTH + variables.INTERACTION_MARGIN
   ) {
-    if (isOpenKeyActive) useUserStore.setState({ gameServer: 1 });
     useGameStore.setState({ isHallOfFameDoorOpen: true });
+    if (!isOpenKeyActive)
+      return message.info({ content: 'Press "E" key to move to Playground.', key: 'playground', duration: 1.5 });
+    if (isControllablePlayer && isOpenKeyActive) useUserStore.setState({ gameServer: 1 });
   } else {
     useGameStore.setState({ isHallOfFameDoorOpen: false });
   }
