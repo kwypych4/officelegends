@@ -1,7 +1,7 @@
 import { useUserStore } from 'store';
 
 import { GameChoose, PlaygroundMap } from '.';
-import { HallOfFameMap } from './components/hall-of-fame';
+import { HallOfFameMap, Settings } from './components';
 import { GameWrapper } from './game.styled';
 
 export const GamePage = () => {
@@ -14,5 +14,9 @@ export const GamePage = () => {
     return <PlaygroundMap />;
   };
 
-  return <GameWrapper>{getGame()}</GameWrapper>;
+  return (
+    <GameWrapper>
+      {getGame()} <Settings />
+    </GameWrapper>
+  );
 };
