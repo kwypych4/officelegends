@@ -1,10 +1,12 @@
+import { WavyTitle } from 'components';
+
 import { LoginForm } from './components';
 import * as Styled from './login.styled';
 
 export const LoginPage = () => {
   return (
     <Styled.Wrapper>
-      <h2>Login to game</h2>
+      <WavyTitle>Login to game</WavyTitle>
       <LoginForm />
     </Styled.Wrapper>
   );
