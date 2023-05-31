@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { IncomingMessage } from 'http';
-import { JoinParams, MoveParams } from '../WsProtocol';
+import { WsJoinParams, WsMoveParams } from '../WsProtocol';
 import { rpcClient } from '../manager/RpcClient';
 import { playerUtils } from '../db/DbUtils';
 import { gameServerManager } from '../manager/GameServerManager';
@@ -20,7 +20,7 @@ export default class WsController {
     this.req = socket.request;
   }
 
-  handleJoin = async ({ gameServer }: JoinParams) => {
+  handleJoin = async ({ gameServer }: WsJoinParams) => {
     const { playerId } = this.req.session;
     if (!playerId) return;
 
@@ -37,7 +37,7 @@ export default class WsController {
 
     const response = await rpcClient.requestJoin(server, {
       id: playerId,
-      nickname: player.username,
+      username: player.username,
       avatar: player.avatar.bitmap,
       skin: player.skin.skin.bitmap,
       money: player.money,
@@ -56,7 +56,7 @@ export default class WsController {
     });
   };
 
-  handleMove = async (params: MoveParams) => {
+  handleMove = async (params: WsMoveParams) => {
     const { playerId, gameServer } = this.req.session;
     if (!playerId || !gameServer) return;
 

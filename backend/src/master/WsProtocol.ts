@@ -1,8 +1,8 @@
-export type JoinParams = {
+export type WsJoinParams = {
   gameServer: number;
 };
 
-export type MoveParams = {
+export type WsMoveParams = {
   direction: string;
   position: {
     x: number;

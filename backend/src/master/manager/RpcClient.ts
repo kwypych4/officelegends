@@ -9,7 +9,7 @@ import {
   MoveResponse,
 } from '../../common/RpcProtocol';
 import { GameServer } from './GameServerManager';
-import { MoveParams } from '../WsProtocol';
+import { WsMoveParams } from '../WsProtocol';
 
 const client = (address: string): JSONRPCClient => {
   const c = new JSONRPCClient<void>((request) => {
@@ -43,7 +43,7 @@ const requestJoin = (gameServer: GameServer, playerData: JoinPlayerData): Promis
 const requestMove = (
   gameServer: GameServer,
   playerId,
-  { direction, position }: MoveParams
+  { direction, position }: WsMoveParams
 ): PromiseLike<MoveResponse> => {
   const body: MoveRequest = {
     uuid: gameServer.uuid,

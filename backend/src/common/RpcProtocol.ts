@@ -3,7 +3,7 @@ import { Position } from '../gs/model/Position';
 
 type JoinPlayerData = {
   id: number;
-  nickname: string;
+  username: string;
   avatar: string;
   skin: string;
   money: number;

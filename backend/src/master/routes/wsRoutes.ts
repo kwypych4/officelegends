@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import WsController from '../controller/WsController';
-import { JoinParams, MoveParams } from '../WsProtocol';
+import { WsJoinParams, WsMoveParams } from '../WsProtocol';
 
 const registerEventHandler = (event: string, socket: Socket, handler: (args) => void) => {
   socket.on(event, (args) => {
@@ -27,9 +27,9 @@ export const registerWsRoutes = (io: Server) => {
 
       const controller = new WsController(io, socket);
 
-      registerEventHandler('join', socket, (params: JoinParams) => controller.handleJoin(params));
+      registerEventHandler('join', socket, (params: WsJoinParams) => controller.handleJoin(params));
 
-      registerEventHandler('move', socket, (params: MoveParams) => controller.handleMove(params));
+      registerEventHandler('move', socket, (params: WsMoveParams) => controller.handleMove(params));
 
       registerEventHandler('leave', socket, () => controller.handleLeave());
 
