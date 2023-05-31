@@ -24,6 +24,11 @@ export default class WsController {
     const { playerId } = this.req.session;
     if (!playerId) return;
 
+    const alreadyJoinedServer = this.req.session.gameServer;
+    if (alreadyJoinedServer !== gameServer) {
+      await this.handleLeave();
+    }
+
     const server = gameServerManager.getServer(gameServer);
     if (!server) return;
 
