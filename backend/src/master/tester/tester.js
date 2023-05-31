@@ -56,10 +56,10 @@ function connect(e) {
 }
 
 function join(e) {
-  const gameId = document.getElementsByName('joinGameId')[0].value;
+  const gameServer = document.getElementsByName('joinGameId')[0].value;
 
   e.preventDefault();
-  socket.emit('join', { gameId }, (ans) => {
+  socket.emit('join', { gameServer }, (ans) => {
     log(`Join response ${ans}`);
   });
 }

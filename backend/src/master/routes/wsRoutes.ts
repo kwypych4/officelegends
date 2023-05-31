@@ -33,9 +33,7 @@ export const registerWsRoutes = (io: Server) => {
 
       registerEventHandler('leave', socket, () => controller.handleLeave());
 
-      registerEventHandler('disconnect', socket, () => {
-        // user disconnected
-      });
+      registerEventHandler('disconnect', socket, () => controller.handleLeave());
     });
   });
 };

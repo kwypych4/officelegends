@@ -1,5 +1,5 @@
 export type JoinParams = {
-  gameId: number;
+  gameServer: number;
 };
 
 export type MoveParams = {

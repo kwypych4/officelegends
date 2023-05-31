@@ -3,6 +3,7 @@ import { IncomingMessage } from 'http';
 import { JoinParams, MoveParams } from '../WsProtocol';
 import { rpcClient } from '../manager/RpcClient';
 import { playerUtils } from '../db/DbUtils';
+import { gameServerManager } from '../manager/GameServerManager';
 
 const roomForGameId = (gameId: number): string => `Game${gameId}`;
 
@@ -19,14 +20,17 @@ export default class WsController {
     this.req = socket.request;
   }
 
-  handleJoin = async ({ gameId }: JoinParams) => {
+  handleJoin = async ({ gameServer }: JoinParams) => {
     const { playerId } = this.req.session;
     if (!playerId) return;
+
+    const server = gameServerManager.getServer(gameServer);
+    if (!server) return;
 
     const player = await playerUtils.findPlayerById(playerId);
     if (!player) return;
 
-    const response = await rpcClient.requestJoin(gameId, {
+    const response = await rpcClient.requestJoin(server, {
       id: playerId,
       nickname: player.username,
       avatar: player.avatar.bitmap,
@@ -37,26 +41,27 @@ export default class WsController {
 
     if (!response.success) return;
 
-    this.req.session.gameId = gameId;
+    this.req.session.gameServer = gameServer;
     this.req.session.save((err) => {
       if (err) return;
 
-      const room = roomForGameId(gameId);
+      const room = roomForGameId(gameServer);
       this.socket.join(room);
       this.io.in(room).emit('join', response.response);
     });
   };
 
   handleMove = async (params: MoveParams) => {
-    const { playerId, gameId } = this.req.session;
+    const { playerId, gameServer } = this.req.session;
+    if (!playerId || !gameServer) return;
 
-    if (!playerId || !gameId) return;
+    const server = gameServerManager.getServer(gameServer);
+    if (!server) return;
 
-    const response = await rpcClient.requestMove(gameId, playerId, params);
-
+    const response = await rpcClient.requestMove(server, playerId, params);
     if (!response.success) return;
 
-    const room = roomForGameId(gameId);
+    const room = roomForGameId(gameServer);
     this.io.in(room).emit('move', {
       player: playerId,
       direction: params.direction,
@@ -65,15 +70,16 @@ export default class WsController {
   };
 
   handleLeave = async () => {
-    const { playerId, gameId } = this.req.session;
+    const { playerId, gameServer } = this.req.session;
+    if (!playerId || !gameServer) return;
 
-    if (!playerId || !gameId) return;
+    const server = gameServerManager.getServer(gameServer);
+    if (!server) return;
 
-    const response = await rpcClient.requestLeave(playerId, gameId);
-
+    const response = await rpcClient.requestLeave(server, playerId);
     if (!response.success) return;
 
-    this.req.session.gameId = undefined;
+    this.req.session.gameServer = undefined;
     this.req.session.save(async (err) => {
       if (err) return;
 
@@ -84,7 +90,7 @@ export default class WsController {
 
       if (!updateResult) return;
 
-      const room = roomForGameId(gameId);
+      const room = roomForGameId(gameServer);
       this.io.in(room).emit('leave', response.response);
       this.socket.leave(room);
     });

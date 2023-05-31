@@ -8,7 +8,7 @@ import {
   MoveRequest,
   MoveResponse,
 } from '../../common/RpcProtocol';
-import { gameServerManager } from './GameServerManager';
+import { GameServer } from './GameServerManager';
 import { MoveParams } from '../WsProtocol';
 
 const client = (address: string): JSONRPCClient => {
@@ -32,21 +32,19 @@ const client = (address: string): JSONRPCClient => {
   return c;
 };
 
-const requestJoin = (gameId: number, playerData: JoinPlayerData): PromiseLike<JoinResponse> => {
-  const gameServer = gameServerManager.getServer(gameId);
-  const { address } = gameServer;
-
+const requestJoin = (gameServer: GameServer, playerData: JoinPlayerData): PromiseLike<JoinResponse> => {
   const body: JoinRequest = {
     uuid: gameServer.uuid,
     player: playerData,
   };
-  return client(address).request('join', body);
+  return client(gameServer.address).request('join', body);
 };
 
-const requestMove = (gameId: number, playerId, { direction, position }: MoveParams): PromiseLike<MoveResponse> => {
-  const gameServer = gameServerManager.getServer(gameId);
-  const { address } = gameServer;
-
+const requestMove = (
+  gameServer: GameServer,
+  playerId,
+  { direction, position }: MoveParams
+): PromiseLike<MoveResponse> => {
   const body: MoveRequest = {
     uuid: gameServer.uuid,
     playerId,
@@ -54,18 +52,15 @@ const requestMove = (gameId: number, playerId, { direction, position }: MovePara
     position,
   };
 
-  return client(address).request('move', body);
+  return client(gameServer.address).request('move', body);
 };
 
-const requestLeave = (playerId: number, gameId: number): PromiseLike<LeaveResponse> => {
-  const gameServer = gameServerManager.getServer(gameId);
-  const { address } = gameServer;
-
+const requestLeave = (gameServer: GameServer, playerId: number): PromiseLike<LeaveResponse> => {
   const body: LeaveRequest = {
     uuid: gameServer.uuid,
     playerId,
   };
-  return client(address).request('leave', body);
+  return client(gameServer.address).request('leave', body);
 };
 
 const rpcClient = { requestJoin, requestMove, requestLeave };

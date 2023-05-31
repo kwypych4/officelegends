@@ -16,4 +16,4 @@ class GameServerManager {
 
 const gameServerManager = new GameServerManager();
 
-export { gameServerManager };
+export { GameServer, gameServerManager };

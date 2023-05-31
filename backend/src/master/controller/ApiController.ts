@@ -13,14 +13,14 @@ type UserStatus = {
   gameServer: number | null;
 };
 
-const createStatus = (player, gameId): UserStatus => ({
+const createStatus = (player, gameServer): UserStatus => ({
   id: player.id,
   username: player.username,
   avatar: player.avatar.bitmap,
   money: player.money,
   exp: player.exp,
   skin: player.skin.skin.bitmap,
-  gameServer: gameId,
+  gameServer,
 });
 
 const register = async (username: string, password: string, avatarId: number, req: Request, res: Response) => {
@@ -39,7 +39,7 @@ const register = async (username: string, password: string, avatarId: number, re
 
   req.session.playerId = player.id;
 
-  return ok(createStatus(player, req.session.gameId), res);
+  return ok(createStatus(player, req.session.gameServer), res);
 };
 
 const login = async (username: string, password: string, req: Request, res: Response) => {
@@ -52,7 +52,7 @@ const login = async (username: string, password: string, req: Request, res: Resp
 
   req.session.playerId = player.id;
 
-  return ok(createStatus(player, req.session.gameId), res);
+  return ok(createStatus(player, req.session.gameServer), res);
 };
 
 const logout = (req: Request, res: Response) => {
@@ -72,7 +72,7 @@ const verifySession = async (req: Request, res: Response) => {
   const player = await playerUtils.findPlayerById(playerId);
   if (!player) return unauthorized('Session invalid', res);
 
-  return ok(createStatus(player, req.session.gameId), res);
+  return ok(createStatus(player, req.session.gameServer), res);
 };
 
 const apiController = { register, login, logout, verifySession };
