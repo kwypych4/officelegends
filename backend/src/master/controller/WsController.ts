@@ -25,7 +25,7 @@ export default class WsController {
     if (!playerId) return;
 
     const alreadyJoinedServer = this.req.session.gameServer;
-    if (alreadyJoinedServer !== gameServer) {
+    if (alreadyJoinedServer) {
       await this.handleLeave();
     }
 
