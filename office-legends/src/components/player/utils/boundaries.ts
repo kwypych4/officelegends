@@ -204,7 +204,7 @@ export const checkDoorsBoundaries = ({
     playerCurrentLeftPosition <= 0 + variables.DOORS_WIDTH + variables.INTERACTION_MARGIN
   ) {
     useGameStore.setState({ isHallOfFameDoorOpen: true });
-    if (!isOpenKeyActive)
+    if (isControllablePlayer && !isOpenKeyActive)
       return message.info({ content: 'Press "E" key to move to Playground.', key: 'playground', duration: 1.5 });
     if (isControllablePlayer && isOpenKeyActive) useUserStore.setState({ gameServer: 1 });
   } else {
