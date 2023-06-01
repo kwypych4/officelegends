@@ -1,6 +1,12 @@
-import { ConnectedPlayer } from '../model/ConnectedPlayer';
-import { Position } from '../model/Position';
-import { JoinPlayerData, JoinResponse, LeaveResponse, MoveResponse } from '../../common/RpcProtocol';
+import {
+  ConnectedPlayer,
+  Position,
+  JoinPlayerData,
+  JoinResponse,
+  LeaveResponse,
+  MoveResponse,
+} from '../../common/RpcProtocol';
+import { argv } from '../argv';
 
 // May be used for collision detection
 const PLAYER_WIDTH = 44;
@@ -30,7 +36,10 @@ class GameController {
 
     return {
       success: true,
-      response: this.connectedPlayers,
+      response: {
+        playersList: this.connectedPlayers,
+        gameServer: argv.serverId,
+      },
     };
   }
 
@@ -62,7 +71,10 @@ class GameController {
 
     return {
       success: true,
-      response: this.connectedPlayers,
+      response: {
+        playersList: this.connectedPlayers,
+        gameServer: argv.serverId,
+      },
       removedPlayer: player,
     };
   }

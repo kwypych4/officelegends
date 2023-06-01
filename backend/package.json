@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "startMaster": "npx nodemon src/master/app.ts 3000",
-    "startGS1": "npx nodemon src/gs/app.ts 4001 \"Main Server\" \"a5430afa-94ed-4156-a8f6-d9667a136b8b\"",
-    "startGS2": "npx nodemon src/gs/app.ts 4002 \"Hall of Fame\" \"b851e782-132d-41b5-913c-6318bab0979b\"",
+    "startGS1": "npx nodemon src/gs/app.ts 4001 \"Main Server\" \"a5430afa-94ed-4156-a8f6-d9667a136b8b\" 1",
+    "startGS2": "npx nodemon src/gs/app.ts 4002 \"Hall of Fame\" \"b851e782-132d-41b5-913c-6318bab0979b\" 2",
     "lint": "eslint . --ext .ts"
   },
   "author": "",

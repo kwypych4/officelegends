@@ -18,7 +18,20 @@ const playerFullInclude = {
   },
 };
 
+const shopUtils = {
+  getShopItems: async () => prisma.skin.findMany(),
+};
+
 const inventoryUtils = {
+  getInventory: async (playerId: number) =>
+    prisma.inventory_skin.findMany({
+      where: {
+        owner_id: playerId,
+      },
+      include: {
+        skin: true,
+      },
+    }),
   giveSkin: async (playerId: number, skinId: number) =>
     prisma.inventory_skin.create({
       data: {
@@ -93,4 +106,4 @@ const playerUtils = {
     }),
 };
 
-export { inventoryUtils, playerUtils };
+export { shopUtils, inventoryUtils, playerUtils };

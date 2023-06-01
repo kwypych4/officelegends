@@ -25,4 +25,12 @@ export const registerApiRoutes = (app: Express) => {
   app.get('/api/verify', async (req, res) => {
     await apiController.verifySession(req, res);
   });
+
+  app.get('/api/inventory', async (req, res) => {
+    await apiController.getInventory(req, res);
+  });
+
+  app.get('/api/shop', async (req, res) => {
+    await apiController.getShopItems(req, res);
+  });
 };

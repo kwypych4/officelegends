@@ -10,7 +10,7 @@
 <body>
     <div class="main-container">
         <div class="main-item">
-            <h1>Register</h1>
+            <h2>Register</h2>
             <form id="register-form" class="form" onsubmit="sendXhr('/api/register', 'POST', event)">
                 <input type="text" name="username" placeholder="Username" />
                 <input type="password" name="password" value="password" />
@@ -19,7 +19,7 @@
             </form>
         </div>
         <div class="main-item">
-            <h1>Login</h1>
+            <h2>Login</h2>
             <form class="form" onsubmit="sendXhr('/api/login', 'POST', event)">
                 <input type="text" name="username" placeholder="Username" />
                 <input type="password" name="password" value="password" />
@@ -27,13 +27,13 @@
             </form>
         </div>
         <div class="main-item">
-            <h1>Logout</h1>
+            <h2>Logout</h2>
             <form class="form" onsubmit="sendXhr('/api/logout', 'POST', event)">
                 <input type="submit" value="Logout" />
             </form>
         </div>
         <div class="main-item">
-            <h1>Verify</h1>
+            <h2>Verify</h2>
             <form class="form" onsubmit="sendXhr('/api/verify', 'GET', event)">
                 <input type="submit" value="Verify" />
             </form>
@@ -41,26 +41,40 @@
     </div>
     <div class="main-container">
         <div class="main-item">
-            <h1>Connect</h1>
+            <h2>Get inventory</h2>
+            <form class="form" onsubmit="sendXhr('/api/inventory', 'GET', event)">
+                <input type="submit" value="Get inventory" />
+            </form>
+        </div>
+        <div class="main-item">
+            <h2>Get shop items</h2>
+            <form class="form" onsubmit="sendXhr('/api/shop', 'GET', event)">
+                <input type="submit" value="Get shop items" />
+            </form>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="main-item">
+            <h2>Connect</h2>
             <form class="form" onsubmit="connect(event)">
                 <input type="submit" value="Connect" />
             </form>
         </div>
         <div class="main-item">
-            <h1>Join</h1>
+            <h2>Join</h2>
             <form class="form" onsubmit="join(event)">
                 <input type="text" name="joinGameId" value="1">
                 <input type="submit" value="Join GS" />
             </form>
         </div>
         <div class="main-item">
-            <h1>Leave</h1>
+            <h2>Leave</h2>
             <form class="form" onsubmit="leave(event)">
                 <input type="submit" value="Leave GS" />
             </form>
         </div>
         <div class="main-item">
-            <h1>Disconnect</h1>
+            <h2>Disconnect</h2>
             <form class="form" onsubmit="disconnect(event)">
                 <input type="submit" value="Disconnect" />
             </form>
@@ -68,7 +82,7 @@
     </div>
     <div class="main-container">
         <div class="main-item">
-            <h1>Move</h1>
+            <h2>Move</h2>
             <form class="form" onsubmit="move(event)">
                 <input type="text" name="moveDirection" value="right" />
                 <input type="text" name="moveX" />

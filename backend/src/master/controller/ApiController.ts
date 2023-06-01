@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { hash, verify } from 'argon2';
-import { playerUtils } from '../db/DbUtils';
+import { inventoryUtils, playerUtils, shopUtils } from '../db/DbUtils';
 import { badRequest, ok, serverError, unauthorized } from '../../util/JsonResponses';
 
 type UserStatus = {
@@ -76,6 +76,19 @@ const verifySession = async (req: Request, res: Response) => {
   return ok(createStatus(player, req.session.gameServer), res);
 };
 
-const apiController = { register, login, logout, verifySession };
+const getInventory = async (req: Request, res: Response) => {
+  const { playerId } = req.session;
+  if (!playerId) return unauthorized('Unauthorized', res);
+
+  const skins = await inventoryUtils.getInventory(playerId);
+  return ok(skins, res);
+};
+
+const getShopItems = async (req: Request, res: Response) => {
+  const shopItems = await shopUtils.getShopItems();
+  return ok(shopItems, res);
+};
+
+const apiController = { register, login, logout, verifySession, getInventory, getShopItems };
 
 export { apiController };

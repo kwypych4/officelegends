@@ -1,4 +1,4 @@
-import { Position } from './Position';
+import { Position } from '../../common/RpcProtocol';
 
 export type Pickup = {
   id: number;

@@ -1,7 +1,4 @@
-import { ConnectedPlayer } from '../gs/model/ConnectedPlayer';
-import { Position } from '../gs/model/Position';
-
-type JoinPlayerData = {
+export type JoinPlayerData = {
   id: number;
   username: string;
   avatar: string;
@@ -10,40 +7,52 @@ type JoinPlayerData = {
   exp: number;
 };
 
-type GenericRpcRequest = {
+export type Position = {
+  x: number;
+  y: number;
+};
+
+export type ConnectedPlayer = JoinPlayerData & {
+  position: Position;
+};
+
+export type GameStatus = {
+  playersList: ConnectedPlayer[];
+  gameServer: number;
+};
+
+export type GenericRpcRequest = {
   uuid: string;
 };
 
-type GenericRpcResponse = {
+export type GenericRpcResponse = {
   success: boolean;
 };
 
-type JoinRequest = GenericRpcRequest & {
+export type JoinRequest = GenericRpcRequest & {
   player: JoinPlayerData;
 };
 
-type JoinResponse = GenericRpcResponse & {
-  response?: ConnectedPlayer[];
+export type JoinResponse = GenericRpcResponse & {
+  response?: GameStatus;
 };
 
-type MoveRequest = GenericRpcRequest & {
+export type MoveRequest = GenericRpcRequest & {
   playerId: number;
   direction: string;
   position: Position;
 };
 
-type MoveResponse = GenericRpcResponse & {
+export type MoveResponse = GenericRpcResponse & {
   direction?: string;
   position?: Position;
 };
 
-type LeaveRequest = GenericRpcRequest & {
+export type LeaveRequest = GenericRpcRequest & {
   playerId: number;
 };
 
-type LeaveResponse = GenericRpcResponse & {
-  response?: ConnectedPlayer[];
+export type LeaveResponse = GenericRpcResponse & {
+  response?: GameStatus;
   removedPlayer?: ConnectedPlayer;
 };
-
-export { JoinPlayerData, JoinRequest, JoinResponse, MoveRequest, MoveResponse, LeaveRequest, LeaveResponse };
