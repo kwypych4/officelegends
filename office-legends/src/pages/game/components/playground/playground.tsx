@@ -12,13 +12,14 @@ export const PlaygroundMap = () => {
       <Shop />
       <PlayRoom />
       <HallOfFame />
-      {playerId && <Player gameServer={1} isControllable id={playerId} />}
       {playersList &&
-        playersList
-          .filter(({ id }) => id !== playerId)
-          .map(({ id, username }) => (
-            <Player gameServer={1} isControllable={false} key={id} id={id} username={username} />
-          ))}
+        playersList.map(({ id, username, position }) => {
+          if (id !== playerId)
+            return (
+              <Player position={position} gameServer={1} isControllable={false} key={id} id={id} username={username} />
+            );
+          return <Player gameServer={1} isControllable id={playerId} position={position} key={id} />;
+        })}
     </GameWrapper>
   );
 };
