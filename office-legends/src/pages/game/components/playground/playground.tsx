@@ -1,18 +1,24 @@
 import { HallOfFame, Player, PlayRoom, Shop } from 'components';
+import { useGameStore, useUserStore } from 'store';
 
-import { response } from './playground.data';
 import { GameWrapper } from './playground.styled';
 
 export const PlaygroundMap = () => {
+  const { playersList } = useGameStore();
+  const { id: playerId } = useUserStore();
+
   return (
     <GameWrapper>
       <Shop />
       <PlayRoom />
       <HallOfFame />
-      <Player gameServer={1} isControllable />
-      {response.map(({ id, action, username }) => (
-        <Player gameServer={1} isControllable={false} key={id} action={action} username={username} />
-      ))}
+      {playerId && <Player gameServer={1} isControllable id={playerId} />}
+      {playersList &&
+        playersList
+          .filter(({ id }) => id !== playerId)
+          .map(({ id, username }) => (
+            <Player gameServer={1} isControllable={false} key={id} id={id} username={username} />
+          ))}
     </GameWrapper>
   );
 };
