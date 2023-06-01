@@ -16,7 +16,7 @@ export const useGameStore = create<GameStateType>(() => ({
   isPlayroomOpened: false,
   socket: io('localhost:3000', {
     transports: ['websocket'],
-    autoConnect: true,
+    autoConnect: false,
   }),
   playersList: null,
 }));
