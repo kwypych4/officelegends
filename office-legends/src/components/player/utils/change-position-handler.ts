@@ -1,3 +1,4 @@
+import { useGameStore } from 'store';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
@@ -8,6 +9,8 @@ import {
   checkPlayRoomBoundaries,
   checkShopBoundaries,
 } from '.';
+
+const { socket } = useGameStore.getState();
 
 const getPlayerCurrentPosition = (
   styleDirection: 'top' | 'left',
@@ -115,11 +118,12 @@ export const handleChangePosition = ({
   if (direction === null) return;
   playerReference.style[styleDirection] = `${getPlayerCurrentPosition(styleDirection, playerRef) + pixelsToMove}px`;
 
-  // const request: WebsocketRequestType = {
-  //   direction,
-  //   position: {
-  //     x: getPlayerCurrentPosition('left', playerRef),
-  //     y: getPlayerCurrentPosition('top', playerRef),
-  //   },
-  // };
+  if (isControllablePlayer)
+    socket.emit('move', {
+      direction,
+      position: {
+        x: getPlayerCurrentPosition('left', playerRef),
+        y: getPlayerCurrentPosition('top', playerRef),
+      },
+    });
 };
