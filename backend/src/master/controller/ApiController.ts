@@ -61,6 +61,7 @@ const logout = (req: Request, res: Response) => {
       return serverError('Server error', res);
     }
 
+    res.clearCookie('connect.sid');
     return ok({ message: 'Logout successful' }, res);
   });
 };

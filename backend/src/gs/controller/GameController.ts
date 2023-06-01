@@ -6,6 +6,9 @@ import { JoinPlayerData, JoinResponse, LeaveResponse, MoveResponse } from '../..
 const PLAYER_WIDTH = 44;
 const PLAYER_HEIGHT = 60;
 
+const randomX = () => Math.floor(Math.random() * (600 - 470) + 470);
+const randomY = () => Math.floor(Math.random() * (400 - 300) + 300);
+
 class GameController {
   private connectedPlayers = Array<ConnectedPlayer>();
 
@@ -22,7 +25,7 @@ class GameController {
       money: player.money,
       exp: player.exp,
       skin: player.skin,
-      position: { x: 0, y: 0 },
+      position: { x: randomX(), y: randomY() },
     });
 
     return {
