@@ -3,16 +3,29 @@ import { MenuProps } from 'antd';
 import { api } from 'api';
 import { useCustomMutation } from 'hooks';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore, useUserStore } from 'store';
+import { useAuthStore, useGameStore, useUserStore } from 'store';
 import { appRoutes } from 'urls';
 
 import * as Styled from './settings.styled';
 
 export const Settings = () => {
   const navigate = useNavigate();
-
+  const { socket } = useGameStore();
   const logoutMutation = useCustomMutation(api.auth.logout, {
     onSuccess: () => {
+      useAuthStore.setState({ isLogged: false });
+      useUserStore.setState({
+        avatar: null,
+        exp: null,
+        gameServer: null,
+        id: null,
+        money: null,
+        skin: null,
+        username: null,
+      });
+      navigate(appRoutes.auth.login);
+    },
+    onError: () => {
       useAuthStore.setState({ isLogged: false });
       useUserStore.setState({
         avatar: null,
@@ -35,7 +48,11 @@ export const Settings = () => {
     {
       key: '1',
       label: 'Logout',
-      onClick: () => logoutMutation.mutateAsync(),
+      onClick: () => {
+        socket.emit('leave');
+        socket.disconnect();
+        logoutMutation.mutateAsync();
+      },
     },
   ];
 
