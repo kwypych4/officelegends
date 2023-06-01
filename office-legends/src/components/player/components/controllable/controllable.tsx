@@ -1,11 +1,20 @@
-import * as Styled from 'components/player/player.styled';
 import { handleChangePosition } from 'components/player/utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useUserStore } from 'store';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
-export const ControllablePlayer = ({ world }: { world: number }) => {
+import * as Styled from './controllable.styled';
+
+export const ControllablePlayer = ({
+  world,
+  position,
+  id,
+}: {
+  world: number;
+  position: { x: number; y: number };
+  id: number;
+}) => {
   const intervalRef = useRef<Array<NodeJS.Timer>>([]);
   const playerRef = useRef<HTMLDivElement | null>(null);
   const [playerPosition, setPlayerPosition] = useState<DirectionsType | null>(null);
@@ -116,12 +125,12 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
 
   useEffect(() => {
     if (!playerRef.current) return;
-    playerRef.current.style.top = `${variables.PLAYER_INIT_Y}px`;
-    playerRef.current.style.left = `${variables.PLAYER_INIT_X}px`;
-  }, []);
+    playerRef.current.style.top = `${position.y}px`;
+    playerRef.current.style.left = `${position.x}px`;
+  }, [position]);
 
   return (
-    <Styled.Player ref={playerRef} $direction={playerPosition}>
+    <Styled.Player ref={playerRef} $direction={playerPosition} key={id}>
       <Styled.PlayerName>
         <div>{username}</div>
       </Styled.PlayerName>

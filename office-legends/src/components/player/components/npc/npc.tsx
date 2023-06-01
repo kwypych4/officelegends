@@ -1,42 +1,51 @@
-import * as Styled from 'components/player/player.styled';
+import { NPCProps } from 'components/player/player.types';
 import { handleChangePosition } from 'components/player/utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useGameStore } from 'store';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
-import { NPCPlayerProps } from './npc.types';
+import * as Styled from './npc.styled';
 
-export const NPCPlayer = ({ world, action, username }: NPCPlayerProps) => {
+export const NPCPlayer = ({ gameServer, username, id, position }: NPCProps) => {
   const playerRef = useRef<HTMLDivElement | null>(null);
   const [playerPosition, setPlayerPosition] = useState<DirectionsType | null>(null);
+  const { socket } = useGameStore();
 
-  const test2 = useCallback(() => {
-    setTimeout(() => setPlayerPosition(null), action.length * variables.INTERVAL_REFRESH);
-    action.forEach((direction, index) => {
-      setTimeout(() => {
-        handleChangePosition({
-          world,
-          direction: direction as any,
-          playerPosition,
-          playerRef,
-          setPlayerPosition,
-          isOpenKeyActive: false,
-          isControllablePlayer: false,
-        });
-      }, variables.INTERVAL_REFRESH * index + 1);
+  const npcMoveHandler = useCallback(
+    (action: (DirectionsType | null)[]) => {
+      setTimeout(() => setPlayerPosition(null), action.length * variables.INTERVAL_REFRESH);
+      action.forEach((direction, index) => {
+        setTimeout(() => {
+          handleChangePosition({
+            world: gameServer,
+            direction,
+            playerPosition,
+            playerRef,
+            setPlayerPosition,
+            isOpenKeyActive: false,
+            isControllablePlayer: false,
+          });
+        }, variables.INTERVAL_REFRESH * index + 1);
+      });
+    },
+    [gameServer, playerPosition]
+  );
+
+  useEffect(() => {
+    socket.on('move', ({ player, direction }) => {
+      if (player === id) npcMoveHandler([direction]);
     });
-  }, [action, playerPosition, world]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, socket]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => test2(), []);
-  useEffect(() => console.log('render'));
   useEffect(() => {
     if (!playerRef.current) return;
-    playerRef.current.style.top = `${variables.PLAYER_INIT_Y}px`;
-    playerRef.current.style.left = `${variables.PLAYER_INIT_X}px`;
-  }, []);
+    playerRef.current.style.top = `${position.y}px`;
+    playerRef.current.style.left = `${position.x}px`;
+  }, [position]);
   return (
-    <Styled.Player ref={playerRef} $direction={playerPosition}>
+    <Styled.Player ref={playerRef} $direction={playerPosition} key={id}>
       <Styled.PlayerName>{username}</Styled.PlayerName>
     </Styled.Player>
   );
