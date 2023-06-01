@@ -1,6 +1,7 @@
 import * as Styled from 'components/player/player.styled';
 import { handleChangePosition } from 'components/player/utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useUserStore } from 'store';
 import { DirectionsType } from 'types';
 import { variables } from 'variables';
 
@@ -8,7 +9,7 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
   const intervalRef = useRef<Array<NodeJS.Timer>>([]);
   const playerRef = useRef<HTMLDivElement | null>(null);
   const [playerPosition, setPlayerPosition] = useState<DirectionsType | null>(null);
-
+  const { username } = useUserStore();
   const handleKeyDown = useCallback(
     (key: KeyboardEvent) => {
       switch (key.code) {
@@ -122,7 +123,7 @@ export const ControllablePlayer = ({ world }: { world: number }) => {
   return (
     <Styled.Player ref={playerRef} $direction={playerPosition}>
       <Styled.PlayerName>
-        <div>Kamyl22</div>
+        <div>{username}</div>
       </Styled.PlayerName>
     </Styled.Player>
   );
