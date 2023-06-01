@@ -18,7 +18,6 @@ export const GamePage = () => {
   }, [gameServer, socket]);
 
   useEffect(() => {
-    console.log('socket change');
     socket.connect();
 
     socket.on('join', ({ playersList }) => {
