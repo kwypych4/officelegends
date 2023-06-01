@@ -50,7 +50,6 @@ export const Settings = () => {
       label: 'Logout',
       onClick: () => {
         socket.emit('leave');
-        socket.disconnect();
         logoutMutation.mutateAsync();
       },
     },
