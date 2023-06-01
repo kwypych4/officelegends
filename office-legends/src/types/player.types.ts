@@ -5,4 +5,8 @@ export type PlayerProperties = {
   username: string;
   skin: number;
   avatar: number;
+  position: {
+    x: number;
+    y: number;
+  };
 };

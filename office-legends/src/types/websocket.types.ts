@@ -18,8 +18,8 @@ export type MoveResponseType = {
 };
 
 export type ServerToClientEvents = {
-  join: ({ playersList }: { playersList: PlayerProperties[] }) => void;
-  leave: ({ playersList }: { playersList: PlayerProperties[] }) => void;
+  join: (playersList: PlayerProperties[]) => void;
+  leave: (playersList: PlayerProperties[]) => void;
   move: (response: MoveResponseType) => void;
 };
 
