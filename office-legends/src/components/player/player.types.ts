@@ -3,6 +3,10 @@ export type PlayerProps = {
   isControllable: true;
   username?: never;
   id: number;
+  position: {
+    x: number;
+    y: number;
+  };
 };
 
 export type NPCProps = {
@@ -10,4 +14,8 @@ export type NPCProps = {
   isControllable: false;
   username: string;
   id: number;
+  position: {
+    x: number;
+    y: number;
+  };
 };
