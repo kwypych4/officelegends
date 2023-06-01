@@ -7,7 +7,7 @@ import { GameWrapper } from './game.styled';
 
 export const GamePage = () => {
   const { gameServer } = useUserStore();
-  const { socket } = useGameStore();
+  const { socket, setPlayersList } = useGameStore();
 
   useEffect(() => {
     if (gameServer !== undefined) {
@@ -21,13 +21,12 @@ export const GamePage = () => {
     console.log('socket change');
     socket.connect();
 
-    socket.on('join', (playersList) => {
+    socket.on('join', ({ playersList }) => {
       useGameStore.setState({ playersList });
     });
 
-    socket.on('leave', (playersList) => {
-      console.log('leave', playersList);
-      useGameStore.setState({ playersList });
+    socket.on('leave', ({ playersList, gameServer }) => {
+      setPlayersList(playersList, gameServer);
     });
 
     return () => {
@@ -40,7 +39,7 @@ export const GamePage = () => {
       });
       socket.disconnect();
     };
-  }, [socket]);
+  }, [socket, setPlayersList]);
 
   const getGame = () => {
     if (gameServer === null || gameServer === undefined) return <GameChoose />;
