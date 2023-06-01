@@ -1,13 +1,13 @@
 import { ControllablePlayer, NPCPlayer } from './components';
 import { NPCProps, PlayerProps } from './player.types';
 
-export const Player = ({ isControllable, action, username, gameServer }: PlayerProps | NPCProps) => {
+export const Player = ({ isControllable, username, gameServer, id }: PlayerProps | NPCProps) => {
   return (
     <div>
       {isControllable ? (
         <ControllablePlayer world={gameServer} />
       ) : (
-        <NPCPlayer world={gameServer} action={action} username={username} />
+        <NPCPlayer isControllable={false} gameServer={gameServer} username={username} id={id} />
       )}
     </div>
   );
