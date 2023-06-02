@@ -5,6 +5,7 @@ import {
   JoinResponse,
   LeaveResponse,
   MoveResponse,
+  Pickup,
 } from '../../common/RpcProtocol';
 import { argv } from '../argv';
 
@@ -17,6 +18,24 @@ const randomY = () => Math.floor(Math.random() * (400 - 300) + 300);
 
 class GameController {
   private connectedPlayers = Array<ConnectedPlayer>();
+
+  private pickups = Array<Pickup>();
+
+  private spawnCoinsInterval;
+
+  constructor() {
+    this.spawnCoinsInterval = setInterval(() => {
+      const pickup: Pickup = {
+        id: 1,
+        amount: 150,
+        position: {
+          x: randomX(),
+          y: randomY(),
+        },
+      };
+      this.pickups.push(pickup);
+    });
+  }
 
   joinPlayer(player: JoinPlayerData): JoinResponse {
     if (this.findPlayer(player.id))
@@ -38,6 +57,7 @@ class GameController {
       success: true,
       response: {
         playersList: this.connectedPlayers,
+        pickupList: this.pickups,
         gameServer: argv.serverId,
       },
     };
@@ -73,6 +93,7 @@ class GameController {
       success: true,
       response: {
         playersList: this.connectedPlayers,
+        pickupList: this.pickups,
         gameServer: argv.serverId,
       },
       removedPlayer: player,
