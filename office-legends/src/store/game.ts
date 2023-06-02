@@ -17,7 +17,7 @@ export const useGameStore = create<GameStateType>((set) => ({
   isHallOfFameDoorOpen: false,
   isShopOpened: false,
   isPlayroomOpened: false,
-  socket: io('localhost:3000', {
+  socket: io(import.meta.env.VITE_APP_WEBSOCKET, {
     transports: ['websocket'],
     autoConnect: false,
   }),
