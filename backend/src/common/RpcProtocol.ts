@@ -12,12 +12,19 @@ export type Position = {
   y: number;
 };
 
+export type Pickup = {
+  id: number;
+  position: Position;
+  amount: number;
+};
+
 export type ConnectedPlayer = JoinPlayerData & {
   position: Position;
 };
 
 export type GameStatus = {
   playersList: ConnectedPlayer[];
+  pickupList: Pickup[];
   gameServer: number;
 };
 
