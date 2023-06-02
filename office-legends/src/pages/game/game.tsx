@@ -29,11 +29,11 @@ export const GamePage = () => {
     });
 
     return () => {
-      socket.off('join', (playersList) => {
+      socket.off('join', ({ playersList }) => {
         useGameStore.setState({ playersList });
       });
 
-      socket.off('leave', (playersList) => {
+      socket.off('leave', ({ playersList }) => {
         useGameStore.setState({ playersList });
       });
       socket.disconnect();
