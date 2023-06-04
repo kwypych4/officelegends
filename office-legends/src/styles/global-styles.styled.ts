@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { button, form } from './components';
+import { button, form, modal } from './components';
 
 export const GlobalStyles = createGlobalStyle`
 
@@ -20,5 +20,6 @@ export const GlobalStyles = createGlobalStyle`
 
   ${button}
   ${form}
+  ${modal}
 
 `;
