@@ -73,6 +73,7 @@ const playerUtils = {
           password: passwordHash,
           money: 0,
           exp: 0,
+          credits: 0,
           avatar_id: avatarId,
         },
       });
@@ -95,7 +96,12 @@ const playerUtils = {
         },
       });
 
-      return p;
+      return tx.player.findFirst({
+          where: {
+              id: p.id
+          },
+          include: playerFullInclude
+      });
     }),
   updatePlayer: async (playerId: number, data: Prisma.playerUpdateInput) =>
     prisma.player.update({

@@ -52,6 +52,15 @@
                 <input type="submit" value="Get shop items" />
             </form>
         </div>
+        <div class="main-item">
+            <h2>Modify player</h2>
+            <form class="form" onsubmit="sendXhr('/api/player', 'PATCH', event)">
+                <input type="text" name="money" placeholder="Money" />
+                <input type="text" name="exp" placeholder="Exp" />
+                <input type="text" name="credits" placeholder="Credits" />
+                <input type="submit" value="Modify player" />
+            </form>
+        </div>
     </div>
     <div class="main-container">
         <div class="main-item">

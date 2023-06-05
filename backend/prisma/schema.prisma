@@ -19,6 +19,7 @@ model player {
   password        String
   money           Int
   exp             Int
+  credits         Int
   avatar_id       Int
   skin_id         Int?
   inventory_skins inventory_skin[] @relation("inventory_skin_owner_idToplayer")
