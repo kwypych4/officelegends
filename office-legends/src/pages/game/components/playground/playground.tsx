@@ -1,4 +1,4 @@
-import { HallOfFame, Player, PlayRoom, Shop } from 'components';
+import { Coin, HallOfFame, Player, PlayRoom, Shop } from 'components';
 import { useGameStore, useUserStore } from 'store';
 
 import { GameWrapper } from './playground.styled';
@@ -9,6 +9,7 @@ export const PlaygroundMap = () => {
 
   return (
     <GameWrapper>
+      <Coin />
       <Shop />
       <PlayRoom />
       <HallOfFame />

@@ -21,4 +21,6 @@ export const variables = {
   DOORS_WIDTH: 13,
   DOORS_HEIGHT: 81,
   DOORS_TOP_POS: 450,
+  COIN_WIDTH: 50,
+  COIN_HEIGHT: 50,
 };

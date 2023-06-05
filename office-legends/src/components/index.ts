@@ -1,3 +1,4 @@
+export * from './coin';
 export * from './doors';
 export * from './hall-of-fame';
 export * from './play-room';
