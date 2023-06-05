@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useGameStore, useUserStore } from 'store';
 
 import { GameChoose, PlaygroundMap } from '.';
-import { HallOfFameMap, Settings } from './components';
+import { HallOfFameMap, Info, Settings } from './components';
 import { GameWrapper } from './game.styled';
 
 export const GamePage = () => {
@@ -51,6 +51,7 @@ export const GamePage = () => {
   return (
     <GameWrapper>
       {getGame()} <Settings />
+      {gameServer && socket.connected && <Info />}
     </GameWrapper>
   );
 };
