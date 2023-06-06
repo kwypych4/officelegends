@@ -38,7 +38,7 @@ class GameController {
     this.connectedPlayers.push({
       id: Number(player.id),
       username: String(player.username),
-      avatar: String(player.avatar),
+      avatar: Number(player.avatar),
       money: Number(player.money),
       exp: Number(player.exp),
       credits: Number(player.credits),

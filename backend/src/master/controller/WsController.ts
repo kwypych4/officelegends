@@ -38,7 +38,7 @@ export default class WsController {
     const response = await rpcClient.requestJoin(server, {
       id: playerId,
       username: player.username,
-      avatar: player.avatar.bitmap,
+      avatar: player.avatar.id,
       skin: player.skin.skin.bitmap,
       money: player.money,
       exp: player.exp,
