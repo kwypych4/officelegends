@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { button, form, modal } from './components';
+import { button, carousel, form, modal } from './components';
 
 export const GlobalStyles = createGlobalStyle`
 
@@ -19,6 +19,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   ${button}
+  ${carousel}
   ${form}
   ${modal}
 
