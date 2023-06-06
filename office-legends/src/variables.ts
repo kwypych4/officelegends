@@ -23,4 +23,6 @@ export const variables = {
   DOORS_TOP_POS: 450,
   COIN_WIDTH: 50,
   COIN_HEIGHT: 50,
+  FRAME_WIDTH: 184,
+  FRAME_HEIGHT: 210,
 };
