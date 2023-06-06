@@ -1,6 +1,6 @@
 import { JSONRPCServer } from 'json-rpc-2.0';
 import { gameController } from '../controller/GameController';
-import { JoinRequest, LeaveRequest, MoveRequest } from '../../common/RpcProtocol';
+import { AddCoinRequest, JoinRequest, LeaveRequest, MoveRequest, UpdatePlayerRequest } from '../../common/RpcProtocol';
 
 const registerRpcRoutes = (server: JSONRPCServer) => {
   server.addMethod('join', ({ player }: JoinRequest) => gameController.joinPlayer(player));
@@ -10,6 +10,10 @@ const registerRpcRoutes = (server: JSONRPCServer) => {
   );
 
   server.addMethod('leave', ({ playerId }: LeaveRequest) => gameController.removePlayer(playerId));
+
+  server.addMethod('updatePlayer', (request: UpdatePlayerRequest) => gameController.updatePlayer(request));
+
+  server.addMethod('spawnCoin', ({ coin }: AddCoinRequest) => gameController.addCoin(coin));
 };
 
 export { registerRpcRoutes };

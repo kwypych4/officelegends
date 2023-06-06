@@ -5,37 +5,28 @@ import {
   JoinResponse,
   LeaveResponse,
   MoveResponse,
-  Pickup,
+  Coin,
+  AddCoinResponse,
+  UpdatePlayerRequest,
+  UpdatePlayerResponse,
 } from '../../common/RpcProtocol';
 import { argv } from '../argv';
 
 // May be used for collision detection
 const PLAYER_WIDTH = 44;
 const PLAYER_HEIGHT = 60;
+const COIN_SIZE = 50; // coin size is 50x50
 
-const randomX = () => Math.floor(Math.random() * (600 - 470) + 470);
-const randomY = () => Math.floor(Math.random() * (400 - 300) + 300);
+export const randomX = () => Math.floor(Math.random() * (600 - 470) + 470);
+export const randomY = () => Math.floor(Math.random() * (400 - 300) + 300);
+
+const testIntersect = (a1: number, a2: number, b1: number, b2: number) =>
+  (a1 >= b1 && a1 <= b2) || (a2 >= b1 && a2 <= b2);
 
 class GameController {
   private connectedPlayers = Array<ConnectedPlayer>();
 
-  private pickups = Array<Pickup>();
-
-  private spawnCoinsInterval;
-
-  constructor() {
-    this.spawnCoinsInterval = setInterval(() => {
-      const pickup: Pickup = {
-        id: 1,
-        amount: 150,
-        position: {
-          x: randomX(),
-          y: randomY(),
-        },
-      };
-      this.pickups.push(pickup);
-    });
-  }
+  private coins = Array<Coin>();
 
   joinPlayer(player: JoinPlayerData): JoinResponse {
     if (this.findPlayer(player.id))
@@ -44,12 +35,13 @@ class GameController {
       };
 
     this.connectedPlayers.push({
-      id: player.id,
-      username: player.username,
-      avatar: player.avatar,
-      money: player.money,
-      exp: player.exp,
-      skin: player.skin,
+      id: Number(player.id),
+      username: String(player.username),
+      avatar: String(player.avatar),
+      money: Number(player.money),
+      exp: Number(player.exp),
+      credits: Number(player.credits),
+      skin: String(player.skin),
       position: { x: randomX(), y: randomY() },
     });
 
@@ -57,7 +49,7 @@ class GameController {
       success: true,
       response: {
         playersList: this.connectedPlayers,
-        pickupList: this.pickups,
+        coinList: this.coins,
         gameServer: argv.serverId,
       },
     };
@@ -72,10 +64,19 @@ class GameController {
     }
 
     player.position = position;
+
+    const pickedCoin = this.getCoinToPickUp(position);
+    if (pickedCoin) {
+      player.money += pickedCoin.amount;
+      this.removeCoin(pickedCoin);
+    }
+
     return {
       success: true,
       position,
       direction,
+      money: player.money,
+      coins: this.coins,
     };
   }
 
@@ -93,11 +94,74 @@ class GameController {
       success: true,
       response: {
         playersList: this.connectedPlayers,
-        pickupList: this.pickups,
+        coinList: this.coins,
         gameServer: argv.serverId,
       },
       removedPlayer: player,
     };
+  }
+
+  updatePlayer({ playerId, money, exp, credits }: UpdatePlayerRequest): UpdatePlayerResponse {
+    const player = this.findPlayer(playerId);
+    if (!player) {
+      return {
+        success: false,
+      };
+    }
+
+    if (money) player.money = Number(money);
+    if (exp) player.exp = Number(exp);
+    if (credits) player.credits = Number(credits);
+
+    return {
+      success: true,
+      response: {
+        playersList: this.connectedPlayers,
+        gameServer: argv.serverId,
+        coinList: this.coins,
+      },
+    };
+  }
+
+  addCoin(coin: Coin): AddCoinResponse {
+    this.coins.push(coin);
+
+    return {
+      success: true,
+      response: this.coins,
+    };
+  }
+
+  private removeCoin(coin: Coin) {
+    this.coins = this.coins.filter((c) => JSON.stringify(c) !== JSON.stringify(coin));
+  }
+
+  private getCoinToPickUp(playerPosition: Position): Coin {
+    const p1: Position = {
+      x: playerPosition.x - PLAYER_WIDTH,
+      y: playerPosition.y - PLAYER_HEIGHT,
+    };
+
+    const p2: Position = {
+      x: playerPosition.x + PLAYER_WIDTH,
+      y: playerPosition.y + PLAYER_HEIGHT,
+    };
+
+    return this.coins.find((c) => {
+      const pos = c.position;
+
+      const c1: Position = {
+        x: pos.x - COIN_SIZE,
+        y: pos.y - COIN_SIZE,
+      };
+
+      const c2: Position = {
+        x: pos.x + COIN_SIZE,
+        y: pos.y + COIN_SIZE,
+      };
+
+      return testIntersect(p1.x, p2.x, c1.x, c2.x) && testIntersect(p1.y, p2.y, c1.y, c2.y);
+    });
   }
 
   private findPlayer(id: number): ConnectedPlayer {

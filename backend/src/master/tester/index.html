@@ -52,15 +52,6 @@
                 <input type="submit" value="Get shop items" />
             </form>
         </div>
-        <div class="main-item">
-            <h2>Modify player</h2>
-            <form class="form" onsubmit="sendXhr('/api/player', 'PATCH', event)">
-                <input type="text" name="money" placeholder="Money" />
-                <input type="text" name="exp" placeholder="Exp" />
-                <input type="text" name="credits" placeholder="Credits" />
-                <input type="submit" value="Modify player" />
-            </form>
-        </div>
     </div>
     <div class="main-container">
         <div class="main-item">
@@ -97,6 +88,24 @@
                 <input type="text" name="moveX" />
                 <input type="text" name="moveY" />
                 <input type="submit" value="Move" />
+            </form>
+        </div>
+        <div class="main-item">
+            <h2>Update player</h2>
+            <form class="form" onsubmit="updatePlayer(event)">
+                <input type="text" name="updateMoney" placeholder="Money" />
+                <input type="text" name="updateExp" placeholder="Exp" />
+                <input type="text" name="updateCredits" placeholder="Credits" />
+                <input type="submit" value="Update player" />
+            </form>
+        </div>
+        <div class="main-item">
+            <h2>Spawn coin</h2>
+            <form class="form" onsubmit="spawnCoin(event)">
+                <input type="text" name="coinX" placeholder="X" />
+                <input type="text" name="coinY" placeholder="Y" />
+                <input type="text" name="coinAmount" placeholder="Amount" />
+                <input type="submit" value="Spawn coin" />
             </form>
         </div>
     </div>

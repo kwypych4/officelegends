@@ -45,6 +45,14 @@ socket.on('move', (data) => {
   log(`WS move -> ${JSON.stringify(data)}`);
 });
 
+socket.on('status', (data) => {
+  log(`WS status -> ${JSON.stringify(data)}`);
+});
+
+socket.on('coin', (data) => {
+  log(`WS coin -> ${JSON.stringify(data)}`);
+});
+
 socket.on('message', (message) => {
   log(`Received message: ${message}`);
 });
@@ -84,6 +92,24 @@ function move(e) {
 
   e.preventDefault();
   socket.emit('move', { direction, position });
+}
+
+function updatePlayer(e) {
+  const money = document.getElementsByName('updateMoney')[0].value;
+  const exp = document.getElementsByName('updateExp')[0].value;
+  const credits = document.getElementsByName('updateCredits')[0].value;
+
+  e.preventDefault();
+  socket.emit('updatePlayer', { money, exp, credits });
+}
+
+function spawnCoin(e) {
+  const x = document.getElementsByName('coinX')[0].value;
+  const y = document.getElementsByName('coinY')[0].value;
+  const amount = document.getElementsByName('coinAmount')[0].value;
+
+  e.preventDefault();
+  socket.emit('spawnCoin', { position: { x, y }, amount });
 }
 
 function clearLogs() {

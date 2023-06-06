@@ -1,5 +1,8 @@
 import { JSONRPCClient } from 'json-rpc-2.0';
 import {
+  AddCoinRequest,
+  AddCoinResponse,
+  Coin,
   JoinPlayerData,
   JoinRequest,
   JoinResponse,
@@ -7,9 +10,11 @@ import {
   LeaveResponse,
   MoveRequest,
   MoveResponse,
+  UpdatePlayerRequest,
+  UpdatePlayerResponse,
 } from '../../common/RpcProtocol';
 import { GameServer } from './GameServerManager';
-import { WsMoveParams } from '../WsProtocol';
+import { WsMoveParams, WsUpdatePlayerParams } from '../WsProtocol';
 
 const client = (address: string): JSONRPCClient => {
   const c = new JSONRPCClient<void>((request) => {
@@ -55,6 +60,22 @@ const requestMove = (
   return client(gameServer.address).request('move', body);
 };
 
+const requestUpdatePlayer = (
+  gameServer: GameServer,
+  playerId: number,
+  { money, exp, credits }: WsUpdatePlayerParams
+): PromiseLike<UpdatePlayerResponse> => {
+  const body: UpdatePlayerRequest = {
+    uuid: gameServer.uuid,
+    playerId,
+    money,
+    exp,
+    credits,
+  };
+
+  return client(gameServer.address).request('updatePlayer', body);
+};
+
 const requestLeave = (gameServer: GameServer, playerId: number): PromiseLike<LeaveResponse> => {
   const body: LeaveRequest = {
     uuid: gameServer.uuid,
@@ -63,6 +84,14 @@ const requestLeave = (gameServer: GameServer, playerId: number): PromiseLike<Lea
   return client(gameServer.address).request('leave', body);
 };
 
-const rpcClient = { requestJoin, requestMove, requestLeave };
+const requestSpawnCoin = (gameServer: GameServer, coin: Coin): PromiseLike<AddCoinResponse> => {
+  const body: AddCoinRequest = {
+    uuid: gameServer.uuid,
+    coin,
+  };
+  return client(gameServer.address).request('spawnCoin', body);
+};
+
+const rpcClient = { requestJoin, requestMove, requestLeave, requestUpdatePlayer, requestSpawnCoin };
 
 export { rpcClient };

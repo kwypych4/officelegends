@@ -5,6 +5,7 @@ export type JoinPlayerData = {
   skin: string;
   money: number;
   exp: number;
+  credits: number;
 };
 
 export type Position = {
@@ -12,8 +13,7 @@ export type Position = {
   y: number;
 };
 
-export type Pickup = {
-  id: number;
+export type Coin = {
   position: Position;
   amount: number;
 };
@@ -24,7 +24,7 @@ export type ConnectedPlayer = JoinPlayerData & {
 
 export type GameStatus = {
   playersList: ConnectedPlayer[];
-  pickupList: Pickup[];
+  coinList: Coin[];
   gameServer: number;
 };
 
@@ -53,6 +53,8 @@ export type MoveRequest = GenericRpcRequest & {
 export type MoveResponse = GenericRpcResponse & {
   direction?: string;
   position?: Position;
+  money?: number;
+  coins?: Coin[];
 };
 
 export type LeaveRequest = GenericRpcRequest & {
@@ -62,4 +64,23 @@ export type LeaveRequest = GenericRpcRequest & {
 export type LeaveResponse = GenericRpcResponse & {
   response?: GameStatus;
   removedPlayer?: ConnectedPlayer;
+};
+
+export type AddCoinRequest = GenericRpcRequest & {
+  coin: Coin;
+};
+
+export type AddCoinResponse = GenericRpcResponse & {
+  response?: Coin[];
+};
+
+export type UpdatePlayerRequest = GenericRpcRequest & {
+  playerId: number;
+  money?: number;
+  exp?: number;
+  credits?: number;
+};
+
+export type UpdatePlayerResponse = GenericRpcResponse & {
+  response?: GameStatus;
 };

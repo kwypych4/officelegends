@@ -9,3 +9,9 @@ export type WsMoveParams = {
     y: number;
   };
 };
+
+export type WsUpdatePlayerParams = {
+  money: number;
+  exp: number;
+  credits: number;
+};

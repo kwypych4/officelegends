@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { hash, verify } from 'argon2';
-import { Prisma } from '@prisma/client';
 import { inventoryUtils, playerUtils, shopUtils } from '../db/DbUtils';
 import { badRequest, ok, serverError, unauthorized } from '../../util/JsonResponses';
 
@@ -79,23 +78,6 @@ const verifySession = async (req: Request, res: Response) => {
   return ok(createStatus(player, req.session.gameServer), res);
 };
 
-const updatePlayer = async (req: Request, res: Response) => {
-  const { playerId } = req.session;
-  if (!playerId) return unauthorized('Unauthorized', res);
-
-  const { body } = req;
-  const updateData: Prisma.playerUpdateInput = {
-    exp: body.exp ? Number(body.exp) : undefined,
-    money: body.money ? Number(body.money) : undefined,
-    credits: body.credits ? Number(body.credits) : undefined,
-  };
-  await playerUtils.updatePlayer(playerId, updateData);
-
-  const newPlayer = await playerUtils.findPlayerById(playerId);
-
-  return ok(createStatus(newPlayer, req.session.gameServer), res);
-};
-
 const getInventory = async (req: Request, res: Response) => {
   const { playerId } = req.session;
   if (!playerId) return unauthorized('Unauthorized', res);
@@ -109,6 +91,6 @@ const getShopItems = async (req: Request, res: Response) => {
   return ok(shopItems, res);
 };
 
-const apiController = { register, login, logout, verifySession, updatePlayer, getInventory, getShopItems };
+const apiController = { register, login, logout, verifySession, getInventory, getShopItems };
 
 export { apiController };

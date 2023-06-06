@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import WsController from '../controller/WsController';
-import { WsJoinParams, WsMoveParams } from '../WsProtocol';
+import { WsJoinParams, WsMoveParams, WsUpdatePlayerParams } from '../WsProtocol';
 
 const registerEventHandler = (event: string, socket: Socket, handler: (args) => void) => {
   socket.on(event, (args) => {
@@ -34,6 +34,10 @@ export const registerWsRoutes = (io: Server) => {
       registerEventHandler('leave', socket, () => controller.handleLeave());
 
       registerEventHandler('disconnect', socket, () => controller.handleLeave());
+
+      registerEventHandler('updatePlayer', socket, (params: WsUpdatePlayerParams) =>
+        controller.handleUpdatePlayer(params)
+      );
     });
   });
 };

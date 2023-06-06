@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { IncomingMessage } from 'http';
-import { WsJoinParams, WsMoveParams } from '../WsProtocol';
+import { WsJoinParams, WsMoveParams, WsUpdatePlayerParams } from '../WsProtocol';
 import { rpcClient } from '../manager/RpcClient';
 import { playerUtils } from '../db/DbUtils';
 import { gameServerManager } from '../manager/GameServerManager';
@@ -42,6 +42,7 @@ export default class WsController {
       skin: player.skin.skin.bitmap,
       money: player.money,
       exp: player.exp,
+      credits: player.credits,
     });
 
     if (!response.success) return;
@@ -71,6 +72,8 @@ export default class WsController {
       player: playerId,
       direction: params.direction,
       position: params.position,
+      money: response.money,
+      coins: response.coins,
     });
   };
 
@@ -99,5 +102,18 @@ export default class WsController {
       this.io.in(room).emit('leave', response.response);
       this.socket.leave(room);
     });
+  };
+
+  handleUpdatePlayer = async (params: WsUpdatePlayerParams) => {
+    const { playerId, gameServer } = this.req.session;
+    if (!playerId || !gameServer) return;
+
+    const server = gameServerManager.getServer(gameServer);
+    const response = await rpcClient.requestUpdatePlayer(server, playerId, params);
+
+    if (!response.success) return;
+
+    const room = roomForGameId(gameServer);
+    this.io.in(room).emit('status', response.response);
   };
 }
