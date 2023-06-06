@@ -60,11 +60,12 @@ export const Wrapper = styled.div<WrapperProps>`
   background-image: url(${coinImage});
   box-shadow: 0px 100px 24px -47px rgba(66, 68, 90, 1);
   animation: ${coinAnimation} 1.3s infinite forwards;
+
   &::after {
     display: block;
     position: absolute;
     content: '';
-    top: 0;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     width: 50px;
