@@ -14,9 +14,9 @@ export const LoginForm = () => {
   const mutateLogin = useCustomMutation(api.auth.login, {
     mutationKey: 'login',
 
-    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username }) => {
+    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username, credits }) => {
       useAuthStore.setState({ isLogged: true });
-      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username });
+      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username, credits });
       navigate(appRoutes.app.game);
     },
     onError: () => {
@@ -29,6 +29,7 @@ export const LoginForm = () => {
         money: null,
         skin: null,
         username: null,
+        credits: null,
       });
     },
   });

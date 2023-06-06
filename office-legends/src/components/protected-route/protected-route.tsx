@@ -8,9 +8,9 @@ export const ProtectedRoute = ({ children, isAuthLayout }: { children: JSX.Eleme
   const isLogged = useAuthStore((state) => state.isLogged);
 
   const isLoggedQuery = useCustomQuery(['verify'], () => api.auth.verify(), {
-    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username }) => {
+    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username, credits }) => {
       useAuthStore.setState({ isLogged: true });
-      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username });
+      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username, credits });
     },
     onError: () => {
       useAuthStore.setState({ isLogged: false });
@@ -22,6 +22,7 @@ export const ProtectedRoute = ({ children, isAuthLayout }: { children: JSX.Eleme
         money: null,
         skin: null,
         username: null,
+        credits: null,
       });
     },
     staleTime: Infinity,

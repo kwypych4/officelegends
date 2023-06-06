@@ -13,9 +13,9 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
   const mutateLogin = useCustomMutation(api.auth.register, {
     mutationKey: 'register',
-    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username }) => {
+    onSuccess: ({ avatar, exp, gameServer, id, money, skin, username, credits }) => {
       useAuthStore.setState({ isLogged: true });
-      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username });
+      useUserStore.setState({ avatar, exp, gameServer, id, money, skin, username, credits });
       navigate(appRoutes.app.game);
     },
     onError: () => {
@@ -28,6 +28,7 @@ export const RegisterForm = () => {
         money: null,
         skin: null,
         username: null,
+        credits: null,
       });
     },
     message: {
