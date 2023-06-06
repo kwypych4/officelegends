@@ -1,4 +1,4 @@
-import { Doors, Player } from 'components';
+import { Doors, Frame, Player } from 'components';
 import { useGameStore, useUserStore } from 'store';
 
 import * as Styled from './hall-of-fame.styled';
@@ -10,6 +10,7 @@ export const HallOfFameMap = () => {
   return (
     <Styled.Wrapper>
       <Doors />
+      <Frame />
       {playersList &&
         playersList.map(({ id, username, position }) => {
           if (id !== playerId)
