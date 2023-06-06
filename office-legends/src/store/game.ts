@@ -1,5 +1,5 @@
 import io, { Socket } from 'socket.io-client';
-import { ClientToServerEvents, PlayerProperties, ServerToClientEvents } from 'types';
+import { ClientToServerEvents, CoinResponseType, PlayerProperties, ServerToClientEvents } from 'types';
 import { create } from 'zustand';
 
 import { useUserStore } from './user';
@@ -10,6 +10,7 @@ type GameStateType = {
   isPlayroomOpened: boolean;
   socket: Socket<ServerToClientEvents, ClientToServerEvents>;
   playersList: PlayerProperties[] | null;
+  coinsList: CoinResponseType[] | null;
   setPlayersList: (playersList: PlayerProperties[], gameServerLeft: number) => void;
 };
 
@@ -22,6 +23,7 @@ export const useGameStore = create<GameStateType>((set) => ({
     autoConnect: false,
   }),
   playersList: null,
+  coinsList: null,
   setPlayersList: (playersList: PlayerProperties[], gameServerLeft: number) =>
     set((state) => {
       const { gameServer } = useUserStore.getState();

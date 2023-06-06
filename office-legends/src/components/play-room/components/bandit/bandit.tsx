@@ -1,6 +1,4 @@
 import { App } from 'antd';
-import { api } from 'api';
-import { useCustomMutation } from 'hooks';
 import { useState } from 'react';
 import { useGameStore, useUserStore } from 'store';
 
@@ -13,20 +11,9 @@ export const Bandit = () => {
   const [banditResult, setBanditResult] = useState(new Array<number>(3).fill(1));
   const { isPlayroomOpened } = useGameStore();
   const { money, credits } = useUserStore();
-
+  const { socket } = useGameStore();
   const duration = 0.5;
   const okText = credits ? 'Spin!' : 'Try luck!';
-
-  const startGameMutation = useCustomMutation(api.player.updatePlayer, {
-    mutationKey: 'updatePlayer',
-    onSuccess: (success) => {
-      useUserStore.setState({
-        credits: success?.credits,
-        money: success?.money,
-        exp: success?.exp,
-      });
-    },
-  });
 
   const handlePlayroomClose = () => {
     setBanditResult(new Array<number>(3).fill(1));
@@ -34,7 +21,7 @@ export const Bandit = () => {
   };
 
   const buyCredits = () => {
-    if (money && money >= 10) return startGameMutation.mutateAsync({ money: money - 10, credits: (credits || 0) + 5 });
+    if (money && money >= 10) return socket.emit('updatePlayer', { money: money - 10, credits: (credits || 0) + 5 });
 
     return message.error({ content: `You don't have enough money to start game :(`, key: 'playroom-lose' });
   };
@@ -45,7 +32,7 @@ export const Bandit = () => {
 
     const reward = getReward(results, message, duration);
 
-    if (credits && money) startGameMutation.mutateAsync({ credits: credits - 1, money: money + reward });
+    if (credits && money) socket.emit('updatePlayer', { credits: credits - 1, money: money + reward });
   };
 
   const okButtonHandler = () => {
