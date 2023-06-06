@@ -36,6 +36,12 @@ export const NPCPlayer = ({ gameServer, username, id, position }: NPCProps) => {
     socket.on('move', ({ player, direction }) => {
       if (player === id) npcMoveHandler([direction]);
     });
+
+    return () => {
+      socket.off('move', ({ player, direction }) => {
+        if (player === id) npcMoveHandler([direction]);
+      });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, socket]);
 

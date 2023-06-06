@@ -1,5 +1,12 @@
 import * as Styled from './coin.styled';
 
-export const Coin = () => {
-  return <Styled.Wrapper />;
+type CoinProps = {
+  position: {
+    x: number;
+    y: number;
+  };
+};
+
+export const Coin = ({ position }: CoinProps) => {
+  return <Styled.Wrapper $position={position} />;
 };

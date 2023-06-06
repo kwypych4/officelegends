@@ -4,12 +4,15 @@ import { useGameStore, useUserStore } from 'store';
 import { GameWrapper } from './playground.styled';
 
 export const PlaygroundMap = () => {
-  const { playersList } = useGameStore();
+  const { playersList, coinsList } = useGameStore();
   const { id: playerId } = useUserStore();
 
   return (
     <GameWrapper>
-      <Coin />
+      {coinsList?.map((coin) => (
+        <Coin key={`${coin.position.x}${coin.position.y}`} position={coin.position} />
+      ))}
+
       <Shop />
       <PlayRoom />
       <HallOfFame />

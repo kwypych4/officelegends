@@ -20,12 +20,24 @@ export const GamePage = () => {
   useEffect(() => {
     socket.connect();
 
-    socket.on('join', ({ playersList }) => {
-      useGameStore.setState({ playersList });
+    socket.on('join', ({ playersList, coinList }) => {
+      useGameStore.setState({ playersList, coinsList: coinList });
     });
 
     socket.on('leave', ({ playersList, gameServer }) => {
       setPlayersList(playersList, gameServer);
+    });
+
+    socket.on('status', ({ player }) => {
+      useUserStore.setState({ credits: player.credits, exp: player.exp, money: player.money });
+    });
+
+    socket.on('coin', (coins) => {
+      useGameStore.setState({ coinsList: coins });
+    });
+
+    socket.on('move', ({ coins }) => {
+      useGameStore.setState({ coinsList: coins });
     });
 
     return () => {
@@ -35,6 +47,18 @@ export const GamePage = () => {
 
       socket.off('leave', ({ playersList }) => {
         useGameStore.setState({ playersList });
+      });
+
+      socket.off('status', ({ player }) => {
+        useUserStore.setState({ credits: player.credits, exp: player.exp, money: player.money });
+      });
+
+      socket.off('coin', (coins) => {
+        useGameStore.setState({ coinsList: coins });
+      });
+
+      socket.off('move', ({ coins }) => {
+        useGameStore.setState({ coinsList: coins });
       });
       socket.disconnect();
     };

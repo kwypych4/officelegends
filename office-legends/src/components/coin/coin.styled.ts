@@ -23,30 +23,37 @@ const coinAnimation = keyframes`
 const shadowAnimation = keyframes`
 
   0% {
-    margin-top: 60px;
+    top: 10px;
     width: 30px;
     opacity: 0.2;
   }
 
   50% {
-    margin-top: 50px;
+    top: 0px;
     width: 50px;
     opacity: 0.4;
   }
 
   100%{
-    margin-top: 60px;
+    top: 10px;
     width: 30px;
     opacity: 0.2;
   }
 
 `;
 
-export const Wrapper = styled.div`
+type WrapperProps = {
+  $position: {
+    x: number;
+    y: number;
+  };
+};
+
+export const Wrapper = styled.div<WrapperProps>`
   position: absolute;
 
-  top: 500px;
-  left: 450px;
+  top: ${({ $position }) => $position.y}px;
+  left: ${({ $position }) => $position.x}px;
   width: ${variables.COIN_WIDTH}px;
   height: ${variables.COIN_HEIGHT}px;
 
