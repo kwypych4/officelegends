@@ -110,6 +110,24 @@ const playerUtils = {
       },
       data,
     }),
+  updateMany: async (updateData) => {
+    await prisma.$transaction(async (tx) => {
+      const promises = await updateData.map((data) =>
+        tx.player.update({
+          where: {
+            id: data.id,
+          },
+          data: {
+            money: data.money,
+            exp: data.exp,
+            credits: data.credits,
+          },
+        })
+      );
+
+      await Promise.all(promises);
+    });
+  },
   getBestPlayers: async (count: number) =>
     prisma.player.findMany({
       orderBy: {

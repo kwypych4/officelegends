@@ -3,6 +3,8 @@ import {
   AddCoinRequest,
   AddCoinResponse,
   Coin,
+  GetStatusRequest,
+  GetStatusResponse,
   JoinPlayerData,
   JoinRequest,
   JoinResponse,
@@ -92,6 +94,14 @@ const requestSpawnCoin = (gameServer: GameServer, coin: Coin): PromiseLike<AddCo
   return client(gameServer.address).request('spawnCoin', body);
 };
 
-const rpcClient = { requestJoin, requestMove, requestLeave, requestUpdatePlayer, requestSpawnCoin };
+const requestStatus = (gameServer: GameServer): PromiseLike<GetStatusResponse> => {
+  const body: GetStatusRequest = {
+    uuid: gameServer.uuid,
+  };
+
+  return client(gameServer.address).request('status', body);
+};
+
+const rpcClient = { requestJoin, requestMove, requestLeave, requestUpdatePlayer, requestSpawnCoin, requestStatus };
 
 export { rpcClient };

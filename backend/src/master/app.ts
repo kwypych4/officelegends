@@ -7,6 +7,7 @@ import { registerWsRoutes } from './routes/wsRoutes';
 import { registerTesterRoutes } from './routes/testerRoutes';
 import { installSession } from './session';
 import { coinManager } from './manager/CoinManager';
+import { setupSaver } from './stateSaver';
 
 const port = Number(process.argv[2]);
 const app = express();
@@ -33,6 +34,7 @@ registerApiRoutes(app);
 registerWsRoutes(io);
 registerTesterRoutes(app);
 
+setupSaver(60_000);
 coinManager.startCoinSpawner(30_000, io);
 
 // eslint-disable-next-line no-console

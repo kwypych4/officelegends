@@ -73,6 +73,7 @@ export default class WsController {
       direction: params.direction,
       position: params.position,
       money: response.money,
+      exp: response.exp,
       coins: response.coins,
     });
   };
@@ -91,12 +92,11 @@ export default class WsController {
     this.req.session.save(async (err) => {
       if (err) return;
 
-      const updateResult = await playerUtils.updatePlayer(playerId, {
+      await playerUtils.updatePlayer(playerId, {
         exp: response.removedPlayer.exp,
         money: response.removedPlayer.money,
+        credits: response.removedPlayer.credits,
       });
-
-      if (!updateResult) return;
 
       const room = roomForGameId(gameServer);
       this.io.in(room).emit('leave', response.response);

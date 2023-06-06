@@ -9,6 +9,7 @@ import {
   AddCoinResponse,
   UpdatePlayerRequest,
   UpdatePlayerResponse,
+  GameStatus,
 } from '../../common/RpcProtocol';
 import { argv } from '../argv';
 
@@ -68,6 +69,7 @@ class GameController {
     const pickedCoin = this.getCoinToPickUp(position);
     if (pickedCoin) {
       player.money += pickedCoin.amount;
+      player.exp += 50;
       this.removeCoin(pickedCoin);
     }
 
@@ -76,6 +78,7 @@ class GameController {
       position,
       direction,
       money: player.money,
+      exp: player.exp,
       coins: this.coins,
     };
   }
@@ -127,6 +130,14 @@ class GameController {
     return {
       success: true,
       response: this.coins,
+    };
+  }
+
+  getStatus(): GameStatus {
+    return {
+      playersList: this.connectedPlayers,
+      coinList: this.coins,
+      gameServer: argv.serverId,
     };
   }
 
