@@ -8,6 +8,7 @@ import { BanditBar, Instruction } from './components';
 
 export const Bandit = () => {
   const { message } = App.useApp();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [banditResult, setBanditResult] = useState(new Array<number>(3).fill(1));
   const { isPlayroomOpened } = useGameStore();
   const { money, credits } = useUserStore();
@@ -27,10 +28,12 @@ export const Bandit = () => {
   };
 
   const handleSpin = () => {
+    setIsButtonDisabled(true);
     const results = Array.from({ length: banditResult.length }, () => Math.floor(Math.random() * 3 + 1));
     setBanditResult(results);
-
     const reward = getReward(results, message, duration);
+
+    setTimeout(() => setIsButtonDisabled(false), duration * 1000);
 
     if (credits && money) socket.emit('updatePlayer', { credits: credits - 1, money: money + reward });
   };
@@ -49,6 +52,9 @@ export const Bandit = () => {
       onCancel={handlePlayroomClose}
       width={700}
       okText={okText}
+      okButtonProps={{
+        disabled: isButtonDisabled,
+      }}
       closeIcon='X'
     >
       <BanditBar banditResult={banditResult} credits={credits || 0} duration={duration} />
