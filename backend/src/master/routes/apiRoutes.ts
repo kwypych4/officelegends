@@ -33,4 +33,8 @@ export const registerApiRoutes = (app: Express) => {
   app.get('/api/shop', async (req, res) => {
     await apiController.getShopItems(req, res);
   });
+
+  app.get('/api/fame', async (req, res) => {
+    await apiController.getHallOfFame(req, res);
+  });
 };

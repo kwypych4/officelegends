@@ -110,6 +110,25 @@ const playerUtils = {
       },
       data,
     }),
+  getBestPlayers: async (count: number) =>
+    prisma.player.findMany({
+      orderBy: {
+        exp: Prisma.SortOrder.desc,
+      },
+      take: count,
+      select: {
+        id: true,
+        username: true,
+        money: true,
+        exp: true,
+        credits: true,
+        avatar: {
+          select: {
+            bitmap: true,
+          },
+        },
+      },
+    }),
 };
 
 export { shopUtils, inventoryUtils, playerUtils };
