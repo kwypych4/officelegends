@@ -25,4 +25,5 @@ export const variables = {
   COIN_HEIGHT: 50,
   FRAME_WIDTH: 184,
   FRAME_HEIGHT: 210,
+  FORM_WIDTH: 315,
 };

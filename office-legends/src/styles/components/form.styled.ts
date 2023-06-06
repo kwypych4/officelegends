@@ -1,9 +1,11 @@
 import { css } from 'styled-components';
+import { variables } from 'variables';
 
 export const form = css`
   .ant-form {
     display: flex;
     flex-direction: column;
+    width: ${variables.FORM_WIDTH}px;
     button {
       margin-left: auto;
     }
