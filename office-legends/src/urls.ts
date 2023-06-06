@@ -45,4 +45,5 @@ export const apiUrls = {
   logout: url('logout'),
   register: url('register'),
   verify: url('verify'),
+  player: url('player'),
 };
