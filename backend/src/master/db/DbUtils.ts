@@ -97,10 +97,10 @@ const playerUtils = {
       });
 
       return tx.player.findFirst({
-          where: {
-              id: p.id
-          },
-          include: playerFullInclude
+        where: {
+          id: p.id,
+        },
+        include: playerFullInclude,
       });
     }),
   updatePlayer: async (playerId: number, data: Prisma.playerUpdateInput) =>

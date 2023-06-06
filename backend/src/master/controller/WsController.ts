@@ -5,7 +5,7 @@ import { rpcClient } from '../manager/RpcClient';
 import { playerUtils } from '../db/DbUtils';
 import { gameServerManager } from '../manager/GameServerManager';
 
-const roomForGameId = (gameId: number): string => `Game${gameId}`;
+export const roomForGameId = (gameId: number): string => `Game${gameId}`;
 
 export default class WsController {
   private readonly socket: Socket;

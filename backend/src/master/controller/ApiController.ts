@@ -10,6 +10,7 @@ type UserStatus = {
   avatar: string;
   money: number;
   exp: number;
+  credits: number;
   skin: string;
   gameServer: number | null;
 };
@@ -20,6 +21,7 @@ const createStatus = (player, gameServer): UserStatus => ({
   avatar: player.avatar.bitmap,
   money: player.money,
   exp: player.exp,
+  credits: player.credits,
   skin: player.skin.skin.bitmap,
   gameServer,
 });
@@ -89,7 +91,9 @@ const updatePlayer = async (req: Request, res: Response) => {
   };
   await playerUtils.updatePlayer(playerId, updateData);
 
-  return ok({ message: 'Player modified' }, res);
+  const newPlayer = await playerUtils.findPlayerById(playerId);
+
+  return ok(createStatus(newPlayer, req.session.gameServer), res);
 };
 
 const getInventory = async (req: Request, res: Response) => {
