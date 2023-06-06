@@ -25,3 +25,11 @@ export const AvatarWrapper = styled.div`
     width: ${variables.FORM_WIDTH}px !important;
   }
 `;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+`;

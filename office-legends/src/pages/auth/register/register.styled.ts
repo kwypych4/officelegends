@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   height: ${variables.BOARD_HEIGHT}px;
 
   h2 {
-    margin-top: -50px;
-    margin-bottom: 50px;
+    margin-top: -20px;
+    margin-bottom: 15px;
   }
 `;
