@@ -109,9 +109,9 @@ class GameController {
       };
     }
 
-    if (money) player.money = Number(money);
-    if (exp) player.exp = Number(exp);
-    if (credits) player.credits = Number(credits);
+    if (typeof money !== 'undefined') player.money = Number(money);
+    if (typeof exp !== 'undefined') player.exp = Number(exp);
+    if (typeof credits !== 'undefined') player.credits = Number(credits);
 
     return {
       success: true,

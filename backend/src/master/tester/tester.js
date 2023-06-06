@@ -95,9 +95,9 @@ function move(e) {
 }
 
 function updatePlayer(e) {
-  const money = document.getElementsByName('updateMoney')[0].value;
-  const exp = document.getElementsByName('updateExp')[0].value;
-  const credits = document.getElementsByName('updateCredits')[0].value;
+  const money = Number(document.getElementsByName('updateMoney')[0].value);
+  const exp = Number(document.getElementsByName('updateExp')[0].value);
+  const credits = Number(document.getElementsByName('updateCredits')[0].value);
 
   e.preventDefault();
   socket.emit('updatePlayer', { money, exp, credits });
