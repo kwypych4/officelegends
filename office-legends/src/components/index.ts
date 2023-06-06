@@ -1,5 +1,6 @@
 export * from './coin';
 export * from './doors';
+export * from './frame';
 export * from './hall-of-fame';
 export * from './play-room';
 export * from './player';
