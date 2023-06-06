@@ -85,7 +85,7 @@ const updatePlayer = async (req: Request, res: Response) => {
   const updateData: Prisma.playerUpdateInput = {
     exp: body.exp ? Number(body.exp) : undefined,
     money: body.money ? Number(body.money) : undefined,
-    credits: body.credits ? Number(body.credits) : undefined
+    credits: body.credits ? Number(body.credits) : undefined,
   };
   await playerUtils.updatePlayer(playerId, updateData);
 
