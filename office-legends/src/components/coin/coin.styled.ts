@@ -4,18 +4,18 @@ import { variables } from 'variables';
 
 import coinImage from '../../assets/images/coin.png';
 
-const coinAnimation = keyframes`
+const coinAnimation = (currentTop: number) => keyframes`
 
   0% {
-    top: 500px
+    top: ${currentTop}px
   }
 
   50% {
-    top: 510px;
+    top: ${currentTop + 10}px;
   }
 
   100%{
-    top: 500px;
+    top: ${currentTop}px;
   }
 
 `;
@@ -59,7 +59,7 @@ export const Wrapper = styled.div<WrapperProps>`
 
   background-image: url(${coinImage});
   box-shadow: 0px 100px 24px -47px rgba(66, 68, 90, 1);
-  animation: ${coinAnimation} 1.3s infinite forwards;
+  animation: ${({ $position }) => coinAnimation($position.y)} 1.3s infinite forwards;
 
   &::after {
     display: block;
