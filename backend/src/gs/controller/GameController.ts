@@ -116,9 +116,7 @@ class GameController {
     return {
       success: true,
       response: {
-        playersList: this.connectedPlayers,
-        gameServer: argv.serverId,
-        coinList: this.coins,
+        player,
       },
     };
   }

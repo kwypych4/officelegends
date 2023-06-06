@@ -82,5 +82,7 @@ export type UpdatePlayerRequest = GenericRpcRequest & {
 };
 
 export type UpdatePlayerResponse = GenericRpcResponse & {
-  response?: GameStatus;
+  response?: {
+    player: ConnectedPlayer;
+  };
 };
