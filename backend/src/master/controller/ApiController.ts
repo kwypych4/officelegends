@@ -91,6 +91,12 @@ const getShopItems = async (req: Request, res: Response) => {
   return ok(shopItems, res);
 };
 
-const apiController = { register, login, logout, verifySession, getInventory, getShopItems };
+const getHallOfFame = async (req: Request, res: Response) => {
+  const response = await playerUtils.getBestPlayers(4);
+
+  return ok(response, res);
+};
+
+const apiController = { register, login, logout, verifySession, getInventory, getShopItems, getHallOfFame };
 
 export { apiController };

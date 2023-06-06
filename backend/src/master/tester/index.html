@@ -38,6 +38,12 @@
                 <input type="submit" value="Verify" />
             </form>
         </div>
+        <div class="main-item">
+            <h2>Hall of Fame</h2>
+            <form class="form" onsubmit="sendXhr('/api/fame', 'GET', event)">
+                <input type="submit" value="Get" />
+            </form>
+        </div>
     </div>
     <div class="main-container">
         <div class="main-item">
