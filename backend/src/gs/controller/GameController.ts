@@ -125,6 +125,12 @@ class GameController {
   }
 
   addCoin(coin: Coin): AddCoinResponse {
+    if (this.coins.length >= 2) {
+      return {
+        success: false,
+      };
+    }
+
     this.coins.push(coin);
 
     return {
