@@ -43,6 +43,7 @@ CREATE TABLE player (
   password text NOT NULL,
   money int NOT NULL,
   exp int NOT NULL,
+  credits int NOT NULL,
   avatar_id int NOT NULL,
   skin_id int,
   CONSTRAINT fk_player_avatar FOREIGN KEY (avatar_id) REFERENCES avatar (id),
