@@ -14,6 +14,8 @@ const registerRpcRoutes = (server: JSONRPCServer) => {
   server.addMethod('updatePlayer', (request: UpdatePlayerRequest) => gameController.updatePlayer(request));
 
   server.addMethod('spawnCoin', ({ coin }: AddCoinRequest) => gameController.addCoin(coin));
+
+  server.addMethod('status', () => gameController.getStatus());
 };
 
 export { registerRpcRoutes };

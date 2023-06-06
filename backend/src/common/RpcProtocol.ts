@@ -1,7 +1,7 @@
 export type JoinPlayerData = {
   id: number;
   username: string;
-  avatar: string;
+  avatar: number;
   skin: string;
   money: number;
   exp: number;
@@ -54,6 +54,7 @@ export type MoveResponse = GenericRpcResponse & {
   direction?: string;
   position?: Position;
   money?: number;
+  exp?: number;
   coins?: Coin[];
 };
 
@@ -85,4 +86,10 @@ export type UpdatePlayerResponse = GenericRpcResponse & {
   response?: {
     player: ConnectedPlayer;
   };
+};
+
+export type GetStatusRequest = GenericRpcRequest;
+
+export type GetStatusResponse = GenericRpcResponse & {
+  response?: GameStatus;
 };
