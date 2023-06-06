@@ -10,11 +10,3 @@ export type PlayerProperties = {
     y: number;
   };
 };
-
-export type ChangePlayerResponseType =
-  | {
-      exp: number | undefined;
-      money: number | undefined;
-      credits: number | undefined;
-    }
-  | undefined;
