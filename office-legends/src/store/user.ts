@@ -11,4 +11,5 @@ export const useUserStore = create<UserStateType>(() => ({
   money: null,
   skin: null,
   username: null,
+  credits: null,
 }));

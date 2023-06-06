@@ -6,4 +6,5 @@ export type UserStatus = {
   skin: number | null;
   avatar: number | null;
   gameServer: number | null;
+  credits: number | null;
 };
