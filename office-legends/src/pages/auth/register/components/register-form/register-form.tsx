@@ -99,7 +99,14 @@ export const RegisterForm = () => {
         </Styled.AvatarWrapper>
       </label>
 
-      <button disabled={isButtonDisabled}>Register new user</button>
+      <Styled.ButtonWrapper>
+        <button disabled={isButtonDisabled} type='submit'>
+          Register new user
+        </button>
+        <button onClick={() => navigate(appRoutes.auth.login)} type='button'>
+          Go back to login
+        </button>
+      </Styled.ButtonWrapper>
     </Form>
   );
 };
