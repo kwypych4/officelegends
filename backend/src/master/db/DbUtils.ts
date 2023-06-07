@@ -140,11 +140,7 @@ const playerUtils = {
         money: true,
         exp: true,
         credits: true,
-        avatar: {
-          select: {
-            bitmap: true,
-          },
-        },
+        avatar_id: true,
       },
     }),
 };
