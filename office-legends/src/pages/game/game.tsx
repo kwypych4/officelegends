@@ -22,6 +22,7 @@ export const GamePage = () => {
 
     socket.on('join', ({ playersList, coinList }) => {
       useGameStore.setState({ playersList, coinsList: coinList });
+      playersList.forEach(({ exp, money, id }) => playerId === id && useUserStore.setState({ exp, money }));
     });
 
     socket.on('leave', ({ playersList, gameServer }) => {
