@@ -9,7 +9,6 @@ export const getReward = (results: number[], message: MessageInstance, duration:
         setTimeout(() => message.success('You won 15$'), duration * 1000);
         return 15;
       }
-
       case 1: {
         setTimeout(() => message.success('You won 30$'), duration * 1000);
         return 30;

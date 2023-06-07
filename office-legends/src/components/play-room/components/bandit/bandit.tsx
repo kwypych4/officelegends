@@ -11,7 +11,7 @@ export const Bandit = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [banditResult, setBanditResult] = useState(new Array<number>(3).fill(1));
   const { isPlayroomOpened } = useGameStore();
-  const { money, credits } = useUserStore();
+  const { money, credits, exp } = useUserStore();
   const { socket } = useGameStore();
   const duration = 0.5;
   const okText = credits ? 'Spin!' : 'Try luck!';
@@ -22,9 +22,10 @@ export const Bandit = () => {
   };
 
   const buyCredits = () => {
-    if (money && money >= 10) return socket.emit('updatePlayer', { money: money - 10, credits: (credits || 0) + 5 });
+    if (money && money >= 10)
+      return socket.emit('updatePlayer', { money: money - 10, credits: (credits || 0) + 5, exp: (exp || 0) + 100 });
 
-    return message.error({ content: `You don't have enough money to start game :(`, key: 'playroom-lose' });
+    return message.error({ content: `You don't have enough money to start game`, key: 'playroom-lose' });
   };
 
   const handleSpin = () => {
@@ -35,7 +36,8 @@ export const Bandit = () => {
 
     setTimeout(() => setIsButtonDisabled(false), duration * 1000);
 
-    if (credits && money) socket.emit('updatePlayer', { credits: credits - 1, money: money + reward });
+    if (credits && money)
+      socket.emit('updatePlayer', { credits: credits - 1, money: money + reward, exp: (exp || 0) + reward });
   };
 
   const okButtonHandler = () => {

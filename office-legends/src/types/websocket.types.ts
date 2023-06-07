@@ -16,6 +16,8 @@ export type MoveResponseType = {
     y: number;
   };
   coins: CoinResponseType[];
+  money: number;
+  exp: number;
 };
 
 export type StatusResponseType = {

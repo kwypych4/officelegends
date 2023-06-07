@@ -6,7 +6,7 @@ import { HallOfFameMap, Info, Settings } from './components';
 import { GameWrapper } from './game.styled';
 
 export const GamePage = () => {
-  const { gameServer } = useUserStore();
+  const { gameServer, id: playerId } = useUserStore();
   const { socket, setPlayersList } = useGameStore();
 
   useEffect(() => {
@@ -36,7 +36,10 @@ export const GamePage = () => {
       useGameStore.setState({ coinsList: coins });
     });
 
-    socket.on('move', ({ coins }) => {
+    socket.on('move', ({ coins, player, exp, money }) => {
+      if (player === playerId) {
+        useUserStore.setState({ exp, money });
+      }
       useGameStore.setState({ coinsList: coins });
     });
 
@@ -57,12 +60,15 @@ export const GamePage = () => {
         useGameStore.setState({ coinsList: coins });
       });
 
-      socket.off('move', ({ coins }) => {
+      socket.off('move', ({ coins, player, exp, money }) => {
+        if (player === playerId) {
+          useUserStore.setState({ exp, money });
+        }
         useGameStore.setState({ coinsList: coins });
       });
       socket.disconnect();
     };
-  }, [socket, setPlayersList]);
+  }, [socket, setPlayersList, playerId]);
 
   const getGame = () => {
     if (gameServer === null || gameServer === undefined) return <GameChoose />;
