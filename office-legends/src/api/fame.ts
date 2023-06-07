@@ -3,7 +3,7 @@ import { request } from 'utils';
 
 type FameRequest = object;
 type FameResponse = {
-  avatar: number;
+  avatar_id: number;
   credits: number;
   exp: number;
   id: number;

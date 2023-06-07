@@ -7,7 +7,7 @@ import * as Styled from './frames.styled';
 type FramesProps = {
   topPlayersList: {
     id: number;
-    avatar: number;
+    avatar_id: number;
     exp: number;
     username: string;
   }[];
@@ -29,9 +29,9 @@ const getAvatar = (avatarId: number) => {
 export const Frames = ({ topPlayersList }: FramesProps) => {
   return (
     <Styled.Wrapper>
-      {topPlayersList?.map(({ id, avatar, exp, username }) => (
+      {topPlayersList?.map(({ id, avatar_id, exp, username }) => (
         <Styled.FrameWrapper key={id}>
-          <img src={getAvatar(avatar)} alt='avatar' />
+          <img src={getAvatar(avatar_id)} alt='avatar' />
           <Styled.Frame />
           <Styled.FrameSignature>
             <p>{username}</p>
