@@ -32,6 +32,9 @@ export const LoginForm = () => {
         credits: null,
       });
     },
+    message: {
+      useResponseErrorMessage: true,
+    },
   });
 
   const handleFinish = () => {
