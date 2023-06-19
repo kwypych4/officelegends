@@ -30,7 +30,6 @@ export const register = async (payload: RegisterProps): RegisterReturn => {
 
   const params = {
     ...payload,
-    avatarId: 1,
   };
 
   const { data } = await request<RegisterResponse, RegisterRequest>(url, 'POST', {}, params);
