@@ -10,7 +10,7 @@ type TCustomQueryOptions = {
 };
 type TQueryKey = [QueryKeys, any?] | QueryKeys;
 type TQueryFunction<T> = QueryFunction<T, TQueryKey>;
-type TQueryError = AxiosError<{ error: string }>;
+type TQueryError = AxiosError<{ message: string }>;
 type TQueryOptions<T> = UseQueryOptions<T, TQueryError, T, TQueryKey> & TCustomQueryOptions;
 type TQueryResult<T> = UseQueryResult<T, TQueryError>;
 
@@ -44,7 +44,7 @@ export const useCustomQuery = <QueryReturnType>(
         notification.error({ message: options.message.onError });
       }
       if (options?.message?.useResponseErrorMessage) {
-        notification.error({ message: error.response?.data.error });
+        notification.error({ message: error.response?.data.message });
       }
     },
     retry: false,
