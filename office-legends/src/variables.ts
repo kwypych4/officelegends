@@ -5,8 +5,6 @@ export const variables = {
   BOARD_HEIGHT: 768,
   INTERVAL_REFRESH: 38,
   PLAYER_MOVE_PIXELS: 7,
-  PLAYER_INIT_X: Math.floor(Math.random() * (600 - 470) + 470),
-  PLAYER_INIT_Y: Math.floor(Math.random() * (400 - 300) + 300),
   SHOP_WIDTH: 428,
   SHOP_HEIGHT: 214,
   SHOP_LEFT_POS: 45,
