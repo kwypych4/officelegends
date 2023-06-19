@@ -50,5 +50,8 @@ export const FrameSignature = styled.div`
   p {
     margin: 0;
     padding: 0;
+    word-break: break-word;
+    width: ${variables.FRAME_WIDTH}px;
+    text-align: center;
   }
 `;
