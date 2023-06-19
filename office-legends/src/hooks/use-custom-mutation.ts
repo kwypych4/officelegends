@@ -11,7 +11,7 @@ type TCustomQueryOptions = {
 type TMutationKey = [MutationKeys, any] | MutationKeys;
 type TQueryKeys = Array<QueryKeys>;
 type TMutationFunction<T, Y> = MutationFunction<T, Y>;
-type TMutationError = AxiosError<{ error: string }>;
+type TMutationError = AxiosError<{ message: string }>;
 type TMutationOptions<T, Y> = UseMutationOptions<
   T,
   TMutationError,
@@ -55,7 +55,7 @@ export const useCustomMutation = <QueryReturnType, QueryRequestType = void>(
         notification.error({ message: options.message.onError });
       }
       if (options?.message?.useResponseErrorMessage) {
-        notification.error({ message: error.response?.data.error });
+        notification.error({ message: error.response?.data.message });
       }
     },
   });
