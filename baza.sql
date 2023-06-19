@@ -7,10 +7,10 @@ CREATE TABLE avatar (
 );
 
 INSERT INTO avatar (bitmap) VALUES
-('swamp'),
-('bluetooth'),
-('devil'),
-('neon');
+('avatar_1'),
+('avatar_2'),
+('avatar_3'),
+('avatar_4');
 
 -- Skiny do kupienia
 CREATE TABLE skin (
@@ -22,10 +22,7 @@ CREATE TABLE skin (
 );
 
 INSERT INTO skin (name, bitmap, price, min_exp) VALUES
-('Podstawowy skin', 'default', 0, 0),
-('Pedałek', 'whyugay', 300, 300),
-('Żołnierzyk', 'soldier', 500, 1000),
-('Papaj', 'pope', 2137, 2137);
+('Podstawowy skin', 'default', 0, 0);
 
 -- Przedmioty należące do gracza
 CREATE TABLE inventory_skin (
