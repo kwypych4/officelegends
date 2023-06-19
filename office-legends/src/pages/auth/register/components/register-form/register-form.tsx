@@ -53,7 +53,7 @@ export const RegisterForm = () => {
     const payload = {
       username: form.getFieldValue(FormInputs.username),
       password: form.getFieldValue(FormInputs.password),
-      avatar_id: avatar,
+      avatarId: avatar,
     };
 
     mutateLogin.mutateAsync({ ...payload });

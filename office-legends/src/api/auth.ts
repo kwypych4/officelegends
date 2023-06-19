@@ -20,6 +20,7 @@ export const login = async (payload: LoginProps): LoginReturn => {
 type RegisterRequest = {
   username: string;
   password: string;
+  avatarId: number;
 };
 type RegisterResponse = UserStatus;
 type RegisterReturn = Promise<RegisterResponse>;
