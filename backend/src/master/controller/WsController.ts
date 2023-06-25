@@ -92,12 +92,6 @@ export default class WsController {
     this.req.session.save(async (err) => {
       if (err) return;
 
-      await playerUtils.updatePlayer(playerId, {
-        exp: response.removedPlayer.exp,
-        money: response.removedPlayer.money,
-        credits: response.removedPlayer.credits,
-      });
-
       const room = roomForGameId(gameServer);
       this.io.in(room).emit('leave', response.response);
       this.socket.leave(room);
