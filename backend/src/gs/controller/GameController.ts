@@ -11,6 +11,7 @@ import {
   UpdatePlayerResponse,
   GameStatus,
 } from '../../common/RpcProtocol';
+import { playerUtils } from '../../master/db/DbUtils';
 import { argv } from '../argv';
 
 // May be used for collision detection
@@ -71,6 +72,11 @@ class GameController {
       player.money += pickedCoin.amount;
       player.exp += 50;
       this.removeCoin(pickedCoin);
+
+      playerUtils.updatePlayer(playerId, {
+        money: player.money,
+        exp: player.exp,
+      });
     }
 
     return {
@@ -115,6 +121,12 @@ class GameController {
     if (typeof money !== 'undefined') player.money = Number(money);
     if (typeof exp !== 'undefined') player.exp = Number(exp);
     if (typeof credits !== 'undefined') player.credits = Number(credits);
+
+    playerUtils.updatePlayer(playerId, {
+      money: player.money,
+      exp: player.exp,
+      credits: player.credits,
+    });
 
     return {
       success: true,
